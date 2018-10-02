@@ -87,9 +87,7 @@ public class BotMap extends Map<Integer> {
 	@Override
 	public Report GetStateCell(int x, int y) {
 		int position = this.ChangeCoordinatesToPosition(x, y);
-		return (this.map[position] == 0)
-			? Report.miss
-			: Report.damage;
+		return GetStateCell(position);
 	}
 
 	@Override
@@ -122,13 +120,14 @@ public class BotMap extends Map<Integer> {
 	}
 
 	@Override
-	public Integer get(int position) {
-		
-		return map[position];
+	public Report GetStateCell(int position) {
+		return (this.map[position] == 0)
+				? Report.miss
+				: Report.damage; 
 	}
 
 	@Override
-	public void set(int position, Integer report) {
+	public void Set(int position, Integer report) {
 		// TODO Auto-generated method stub
 		
 	}

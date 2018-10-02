@@ -10,13 +10,12 @@ public class BotShip extends Ship {
 	
 	BotShip(int countDeck, int position, Orientation orientation, int number, int x, int y)
 	{	
-		super(countDeck, position);
+		super(position, orientation, countDeck);
 		this.X = x;
 		this.Y = y;
 		this.IdNumber = number;
 		this.scoreAlive = countDeck;
 		this.state = State.alive;
-		this.orientation = orientation;
 	}
 	
 	public int Position()

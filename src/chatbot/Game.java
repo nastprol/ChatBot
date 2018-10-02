@@ -8,7 +8,7 @@ public class Game implements IGame {
 	private Map<Report> PlayerMap;
 	private Boolean IsActive;
 	private Boolean FindNextShip;
-	private Ship CurrentShip;
+	private PlayerShip CurrentShip;
 	private int Position;
 	private Map<Integer> BotMap;
 
@@ -51,12 +51,12 @@ public class Game implements IGame {
 		PlayerMap =  new PlayerMap();
 		IsActive = false;
 		FindNextShip = true;
-		CurrentShip = new Ship(0, 0);
+		CurrentShip = new PlayerShip(0, 0);
 		Position = 0;
 		BotMap = new BotMap();
 	}
 
-	public Game(BotMap map,PlayerMap playerMap, Boolean findNextShip,Ship ship,int position) {
+	public Game(BotMap map,PlayerMap playerMap, Boolean findNextShip,PlayerShip ship,int position) {
 		PlayerMap = playerMap;
 		IsActive = false;
 		FindNextShip = findNextShip;
@@ -91,20 +91,20 @@ public class Game implements IGame {
 			FindNextShip = report != Report.damage;
 			if (report == Report.damage) {
 				CurrentShip.FirstUpdate(Position);
-				PlayerMap.set(Position,Report.damage);
+				PlayerMap.Set(Position,Report.damage);
 			} else if (report == Report.kill) {
 				CurrentShip.FirstUpdate(Position);
-				PlayerMap.set(Position, Report.kill);
+				PlayerMap.Set(Position, Report.kill);
 				PlayerMap.SelectionArea(CurrentShip);
 				PlayerMap.fleet.RegisterKill(CurrentShip);
 			} else {
-				PlayerMap.set(Position,Report.miss);
+				PlayerMap.Set(Position,Report.miss);
 			}
 		} else {
 			FindNextShip = report == Report.kill;
 			if (report != Report.miss) {
 				CurrentShip.MoveShip(Position);
-				PlayerMap.set(Position,Report.damage);
+				PlayerMap.Set(Position,Report.damage);
 
 			}
 			if (report == Report.kill) {
@@ -112,7 +112,7 @@ public class Game implements IGame {
 				PlayerMap.fleet.RegisterKill(CurrentShip);
 			}
 			if (report == Report.miss)
-				PlayerMap.set(Position, Report.miss);
+				PlayerMap.Set(Position, Report.miss);
 		}
 		IsActive = PlayerMap.fleet.Count != 0;
 	}
@@ -155,7 +155,7 @@ public class Game implements IGame {
 	
 	private void FillProbabilityMap(int[] probability)
 	{
-		Ship ship = new Ship(0, 0);
+		PlayerShip ship = new PlayerShip(0, 0);
 		ship.length = 0;
 		for (int i = 0; i < 10; i++) {
 			if (PlayerMap.fleet.Ships[i].position == 100 && PlayerMap.fleet.Ships[i].length > ship.length)
@@ -172,12 +172,12 @@ public class Game implements IGame {
 		}
 	}
 	
-	private void PlusHorizontally(Ship ship, int[] field) {
+	private void PlusHorizontally(PlayerShip ship, int[] field) {
 		for (int i = ship.position; i < ship.position + ship.length; i++)
 			field[i]++;
 	}
 
-	private void PlusVertically(Ship ship, int[] field) {
+	private void PlusVertically(PlayerShip ship, int[] field) {
 		int j = ship.position;
 		while (j <= ship.position + (ship.length - 1) * 10) {
 			field[j]++;
@@ -186,7 +186,7 @@ public class Game implements IGame {
 	}
 
 	
-	private int ChooseShotToBeat(Ship ship) {
+	private int ChooseShotToBeat(PlayerShip ship) {
 		ArrayList<Direction> directions = new ArrayList<Direction>();
 		int position = ship.position;
 		FillDirections(directions, ship);
@@ -211,13 +211,13 @@ public class Game implements IGame {
 		return position;
 	}
 	
-	private void FillDirections(ArrayList<Direction> directions, Ship ship)
+	private void FillDirections(ArrayList<Direction> directions, PlayerShip ship)
 	{
 		
 		Tuple coordinat = PlayerMap.ChangePositionToCoordinates(ship.position);
 
 		if (ship.orientation != Orientation.vertically) {
-			if (ship.position - 1 >= 0 && PlayerMap.get(ship.position - 1) == Report.empty)
+			if (ship.position - 1 >= 0 && PlayerMap.GetStateCell(ship.position - 1) == Report.empty)
 				directions.add(Direction.left);
 			
 			if (PlayerMap.CanStay(coordinat.X, ship.length+1,coordinat.Y, Orientation.horizontally) )
@@ -228,7 +228,7 @@ public class Game implements IGame {
 			if (PlayerMap.CanStay(coordinat.Y,ship.length+1,coordinat.X,  Orientation.vertically) )
 				directions.add(Direction.down);
 			int upPosition = ship.position - 10 * ship.length;
-			if (upPosition >= 0 && PlayerMap.get(upPosition) == Report.empty)
+			if (upPosition >= 0 && PlayerMap.GetStateCell(upPosition) == Report.empty)
 				directions.add(Direction.up);
 		}
 	}

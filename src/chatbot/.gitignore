@@ -15,8 +15,11 @@
 /State.class
 /Tuple.class
 /test1.class
-/testSveta.class
-/testBotShip.class
-/testBotMap.class
 /PlayerMap.class
+/FleetTest.class
+/testBotShip.class
+/BotMapTest.class
+/testBotMap.class
 /testGame.class
+/PlayShip.class
+/PlayerShip.class

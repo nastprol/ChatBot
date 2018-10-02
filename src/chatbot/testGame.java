@@ -18,7 +18,7 @@ class testGame {
 	void test() {
 		
 		BotMap map = new BotMap();
-		Game game = new Game(map,new PlayerMap(), true,new Ship(0,0),0);
+		Game game = new Game(map,new PlayerMap(), true,new PlayerShip(0,0),0);
 		String report = "";
 		game.SetActive();
 		for(int i = 0; i < 10; i++) {
@@ -42,19 +42,19 @@ class testGame {
 		int position = x*10+y;
 		PlayerMap map = new PlayerMap();
 		
-		Game game = new Game(new BotMap(),map, true,new Ship(0,0),position);
+		Game game = new Game(new BotMap(),map, true,new PlayerShip(0,0),position);
 		
 		game.SetActive();
 		game.UpdatePlayerMap(Report.kill);
-		assertEquals(map.get(position),Report.kill);
-		assertEquals(map.get(position-1),Report.round);
-		assertEquals(map.get(position+1), Report.round);
-		assertEquals(map.get(position-9), Report.round);
-		assertEquals(map.get(position-11), Report.round);
-		assertEquals(map.get(position-10),Report.round);
-		assertEquals(map.get(position+11), Report.round);
-		assertEquals(map.get(position+9), Report.round);
-		assertEquals(map.get(position+10), Report.round);
+		assertEquals(map.GetStateCell(position),Report.kill);
+		assertEquals(map.GetStateCell(position-1),Report.round);
+		assertEquals(map.GetStateCell(position+1), Report.round);
+		assertEquals(map.GetStateCell(position-9), Report.round);
+		assertEquals(map.GetStateCell(position-11), Report.round);
+		assertEquals(map.GetStateCell(position-10),Report.round);
+		assertEquals(map.GetStateCell(position+11), Report.round);
+		assertEquals(map.GetStateCell(position+9), Report.round);
+		assertEquals(map.GetStateCell(position+10), Report.round);
 		}
 	}
 	
@@ -63,29 +63,29 @@ class testGame {
 		
 		int position = 23;
 		PlayerMap map = new PlayerMap();
-		map.set(22,Report.damage);
-		map.set(21, Report.damage);
-		Ship ship = new Ship(2,21); 
+		map.Set(22,Report.damage);
+		map.Set(21, Report.damage);
+		PlayerShip ship = new PlayerShip(2,21); 
 		ship.orientation = Orientation.horizontally;
 		Game game = new Game(new BotMap(),map, false, ship,position);
 		
 		game.SetActive();
 		game.UpdatePlayerMap(Report.kill);
-		assertEquals(map.get(position), Report.kill);
-		assertEquals(map.get(position-1), Report.kill);
-		assertEquals(map.get(position-2), Report.kill);
-		assertEquals(map.get(position-3), Report.round);
-		assertEquals(map.get(position+1), Report.round);
-		assertEquals(map.get(position-10), Report.round);
-		assertEquals(map.get(position-11), Report.round);
-		assertEquals(map.get(position-12), Report.round);
-		assertEquals(map.get(position-13), Report.round);
-		assertEquals(map.get(position-9), Report.round);
-		assertEquals(map.get(position+10), Report.round);
-	    assertEquals(map.get(position+9), Report.round);
-		assertEquals(map.get(position+8), Report.round);
-		assertEquals(map.get(position+7), Report.round);
-		assertEquals(map.get(position+11), Report.round);
+		assertEquals(map.GetStateCell(position), Report.kill);
+		assertEquals(map.GetStateCell(position-1), Report.kill);
+		assertEquals(map.GetStateCell(position-2), Report.kill);
+		assertEquals(map.GetStateCell(position-3), Report.round);
+		assertEquals(map.GetStateCell(position+1), Report.round);
+		assertEquals(map.GetStateCell(position-10), Report.round);
+		assertEquals(map.GetStateCell(position-11), Report.round);
+		assertEquals(map.GetStateCell(position-12), Report.round);
+		assertEquals(map.GetStateCell(position-13), Report.round);
+		assertEquals(map.GetStateCell(position-9), Report.round);
+		assertEquals(map.GetStateCell(position+10), Report.round);
+	    assertEquals(map.GetStateCell(position+9), Report.round);
+		assertEquals(map.GetStateCell(position+8), Report.round);
+		assertEquals(map.GetStateCell(position+7), Report.round);
+		assertEquals(map.GetStateCell(position+11), Report.round);
 		}
 	
 
@@ -93,9 +93,9 @@ class testGame {
 void testShoot() {
 	
 	PlayerMap map = new PlayerMap();
-	map.set(22,Report.damage);
-	map.set(32, Report.damage);
-	Ship ship = new Ship(2,22);
+	map.Set(22,Report.damage);
+	map.Set(32, Report.damage);
+	PlayerShip ship = new PlayerShip(2,22);
 	ship.orientation = Orientation.vertically;
 	Game game = new Game(new BotMap(),map, false, ship,32);
 	game.SetActive();
@@ -107,10 +107,10 @@ void testShoot() {
 void testShootOneWay() {
 	
 	PlayerMap map = new PlayerMap();
-	map.set(78,Report.damage);
-	map.set(88,Report.miss);
-	map.set(77,Report.miss);
-	Ship ship = new Ship(1,78);
+	map.Set(78,Report.damage);
+	map.Set(88,Report.miss);
+	map.Set(77,Report.miss);
+	PlayerShip ship = new PlayerShip(1,78);
 	Game game = new Game(new BotMap(),map, false, ship,77);
 	game.SetActive();
 	Tuple tuple = game.Shoot();

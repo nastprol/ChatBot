@@ -1,9 +1,5 @@
 package chatbot;
 
-import java.util.function.Function;
-import java.util.zip.Inflater;
-
-
 public abstract class Map<T> {
 	protected int size;
 	protected Fleet fleet;
@@ -77,8 +73,8 @@ public abstract class Map<T> {
 	public abstract Report ChangeState(int x, int y);
 	public abstract void fillMap();
 	public abstract Boolean CheckConditional(int position);
-	public abstract T get(int position);
-	public abstract void set(int position, T report);
+	public abstract Report GetStateCell(int position);
+	public abstract void Set(int position, T report);
 	public int countShipsAlive()
 	{
 		return this.fleet.Count;

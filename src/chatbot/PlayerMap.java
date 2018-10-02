@@ -1,9 +1,5 @@
 package chatbot;
 
-import java.util.ArrayList;
-import java.util.Random;
-import java.util.function.Function;
-
 public class PlayerMap extends Map<Report> {
 	
 	
@@ -18,13 +14,13 @@ public class PlayerMap extends Map<Report> {
 	}
 	
 	@Override
-	public void set(int position,Report report)
+	public void Set(int position,Report report)
 	{
 		map[position]= report;
 	}
 	
 	@Override
-	public Report get(int position)
+	public Report GetStateCell(int position)
 	{
 		return map[position];
 	}
@@ -49,7 +45,7 @@ public class PlayerMap extends Map<Report> {
 
 	@Override
 	public Report GetStateCell(int x, int y) {
-		return this.map[this.ChangeCoordinatesToPosition(x, y)];
+		return this.GetStateCell(this.ChangeCoordinatesToPosition(x, y));
 	}
 
 	@Override
