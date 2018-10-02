@@ -63,6 +63,15 @@ public class Game implements IGame {
 		Position = 0;
 		BotMap = new BotMap();
 	}
+	
+	public Game(Map map) {
+		PlayerMap =  new PlayerMap();
+		IsActive = false;
+		FindNextShip = true;
+		CurrentShip = new PlayerShip(0, 0);
+		Position = 0;
+		BotMap = map;
+	}
 
 	public Game(BotMap map,PlayerMap playerMap, Boolean findNextShip,PlayerShip ship,int position) {
 		PlayerMap = playerMap;
