@@ -1,10 +1,11 @@
 package chatbot;
 
-//import java.util.ArrayList;
+import java.util.function.Function;
+import java.util.zip.Inflater;
+
 
 public abstract class Map<T> {
 	protected int size;
-	//protected T[] map;
 	protected Fleet fleet;
 
 
@@ -14,12 +15,15 @@ public abstract class Map<T> {
 		this.fleet = new Fleet(10);
 	}
 	
-	public Boolean CanStay( int checkCoordinats, int deck, Boolean conditional)
+	public Boolean CanStay( int checkCoordinats, int deck, int secondCoordinates, Orientation orientation)
 	{
-		var result = true;
+		Boolean result = true;
 		for(int j = checkCoordinats; j < checkCoordinats + deck; j++)
 		{
-			if (j >= this.size && conditional)
+			int position = (orientation == Orientation.vertically)
+					? this.ChangeCoordinatesToPosition(secondCoordinates, j)
+					: this.ChangeCoordinatesToPosition(j, secondCoordinates);
+			if (j >= this.size ||  this.CheckConditional(position))
 			{
 				result = false;
 				break;
@@ -38,14 +42,17 @@ public abstract class Map<T> {
 		return new Tuple(position % this.size, position / this.size);
 	}
 	
-	public void SelectionArea(int x, int y, Orientation orientation, int deck)
+	public void SelectionArea(Ship ship)
 	{
-		var startY = (y - 1 >= 0) ? y - 1 : y;
-		var startX = (x - 1 >= 0) ? x - 1 : x;
-		if (orientation == Orientation.horizontally)
-			this.GoToMap(startX, startY, startX + 3, startY + deck + 2);
+		Tuple coordinate = this.ChangePositionToCoordinates(ship.position);
+		int y = coordinate.Y;
+		int x = coordinate.X;
+		int startY = (y - 1 >= 0) ? y - 1 : y;
+		int startX = (x - 1 >= 0) ? x - 1 : x;
+		if (ship.orientation == Orientation.horizontally)
+			this.GoToMap(startX, startY, startX + ship.length + 2, startY + 3);
 		else
-			this.GoToMap(startX, startY, startX + deck + 2, startY + 3);
+			this.GoToMap(startX, startY, startX + 3, startY + ship.length + 2);
 	}
 	
 	public void GoToMap(int startX, int startY, int endX, int endY)
@@ -54,9 +61,12 @@ public abstract class Map<T> {
 		{
 			for(int j = startY; j < endY; j++)
 			{
+
 				if (j < 10 && i < 10)
+
 				{
-					var position = this.ChangeCoordinatesToPosition(i, j);
+
+					int position = this.ChangeCoordinatesToPosition(i, j);
 					this.DoSomthingInArea(position);
 				}
 			}
@@ -65,6 +75,10 @@ public abstract class Map<T> {
 	public abstract void DoSomthingInArea(int position);
 	public abstract Report GetStateCell(int x, int y);
 	public abstract Report ChangeState(int x, int y);
+	public abstract void fillMap();
+	public abstract Boolean CheckConditional(int position);
+	public abstract T get(int position);
+	public abstract void set(int position, T report);
 	public int countShipsAlive()
 	{
 		return this.fleet.Count;

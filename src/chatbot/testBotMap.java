@@ -8,10 +8,10 @@ class testBotMap {
 
 	int CountDamagedCell(BotMap botMap)
 	{
-		var curDamagedCell = 0;
-		for (var i = 0; i < botMap.size; i++)
+		int curDamagedCell = 0;
+		for (int i = 0; i < botMap.size; i++)
 		{
-			for (var j = 0; j < botMap.size; j++)
+			for (int j = 0; j < botMap.size; j++)
 			{
 				if (botMap.GetStateCell(i, j) == Report.damage)
 					curDamagedCell++;
@@ -21,9 +21,9 @@ class testBotMap {
 	}
 	@Test
 	void testBotMapInit() {
-		var damagedCell = 20;
-		var botMap= new BotMap();
-		var curDamagedCell = this.CountDamagedCell(botMap);
+		int damagedCell = 20;
+		BotMap botMap= new BotMap();
+		int curDamagedCell = this.CountDamagedCell(botMap);
 		assertEquals(10, botMap.size);
 		assertEquals(10, botMap.countShipsAlive());
 		assertEquals(damagedCell, curDamagedCell);
@@ -31,12 +31,12 @@ class testBotMap {
 	
 	@Test
 	void testBotMapEnd() {
-		var killedShip = 10;
-		var curKilledShip = 0;
-		var botMap = new BotMap();
-		for (var i = 0; i < botMap.size; i++)
+		int killedShip = 10;
+		int curKilledShip = 0;
+		BotMap botMap = new BotMap();
+		for (int i = 0; i < botMap.size; i++)
 		{
-			for (var j = 0; j < botMap.size; j++)
+			for (int j = 0; j < botMap.size; j++)
 			{
 				if (botMap.GetStateCell(i, j) == Report.damage)
 				{
@@ -45,7 +45,7 @@ class testBotMap {
 				}
 			}
 		}
-		var curDamagedCell = this.CountDamagedCell(botMap);
+		int curDamagedCell = this.CountDamagedCell(botMap);
 		assertEquals(0, botMap.countShipsAlive());
 		assertEquals(killedShip, curKilledShip);
 		assertEquals(0, curDamagedCell);

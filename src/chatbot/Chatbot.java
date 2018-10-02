@@ -7,7 +7,7 @@ public class Chatbot {
 	
 	Chatbot(IGameFactory gameFactory) { 
 		this.gameFactory = gameFactory;
-        game = gameFactory.create();
+        game = this.gameFactory.create();
 	} 
 	
 	public String ProcessRequest(String userRequest) {

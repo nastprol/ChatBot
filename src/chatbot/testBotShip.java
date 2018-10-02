@@ -16,7 +16,7 @@ class testBotShip {
 
 	@Test
 	void testBotShipInit() {
-		var ship = new BotShip(countDeck, position, orientation, number, x, y);
+		BotShip ship = new BotShip(countDeck, position, orientation, number, x, y);
 		assertEquals(State.alive, ship.State());
 		assertEquals(countDeck, ship.CountDeck());
 		assertEquals(position, ship.Position());
@@ -29,7 +29,7 @@ class testBotShip {
 	
 	@Test
 	void testBotShipChangeStateDamaged() {
-		var ship = new BotShip(countDeck, position, orientation, number, x, y);
+		BotShip ship = new BotShip(countDeck, position, orientation, number, x, y);
 		ship.ÑhageState();
 		assertEquals(State.damaged, ship.State());
 		assertEquals(countDeck - 1, ship.ScoreAlive());
@@ -43,8 +43,8 @@ class testBotShip {
 	
 	@Test
 	void testBotShipChangeStateKilled() {
-		var ship = new BotShip(countDeck, position, orientation, number, x, y);
-		for (var i = 0; i < countDeck; i++)
+		BotShip ship = new BotShip(countDeck, position, orientation, number, x, y);
+		for (int i = 0; i < countDeck; i++)
 			ship.ÑhageState();
 		assertEquals(State.killed, ship.State());
 		assertEquals(0, ship.ScoreAlive());
