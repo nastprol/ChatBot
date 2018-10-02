@@ -23,15 +23,17 @@ public class Game implements IGame {
 	
 	@Override
 	public String Play(String command) {
+		if (!this.isActive())
+			return "Game wasn't started";
 		switch (command) {
 		case "damage": {
 			UpdatePlayerMap(Report.damage);
-			Tuple point = Shoot();
+			var point = Shoot();
 			return point.toString();
 		}
 		case "kill": {
 			UpdatePlayerMap(Report.kill);
-			Tuple point = Shoot();
+			var point = Shoot();
 			return point.toString();
 		}
 		case "miss": {
@@ -39,10 +41,16 @@ public class Game implements IGame {
 			return "Your turn";
 		}
 		default: {
-			String[] coord = command.split(" ");
-			int y = Integer.parseInt(coord[1]) - 1;
-			int x = (int) coord[0].charAt(0) - 96;
-			return Check(x, y);
+			try {
+				var coord = command.split(" ");
+				var y = Integer.parseInt(coord[1]) - 1;
+				var x = (int) coord[0].charAt(0) - 96;
+				if (coordinatesInFormat(x, y))
+					return Check(x, y);
+			} catch (Exception e) {
+				return "Send me coordinates in format <A-I> <1-10>";
+			}
+			return "Send me coordinates in format <A-I> <1-10>";
 		}
 		}
 	}
@@ -151,6 +159,10 @@ public class Game implements IGame {
 			i = random.nextInt(size - 1);
 		}
 		return bestShots.get(i);
+	}
+	
+	private Boolean coordinatesInFormat(int x, int y) {
+		return x < 10 && x > -1 && y < 10 && y > -1;
 	}
 	
 	private void FillProbabilityMap(int[] probability)
