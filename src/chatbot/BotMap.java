@@ -45,9 +45,9 @@ public class BotMap extends Map<Integer> {
 							: this.CanStay(coordinates.X, i, coordinates.Y, orientation);
 					if (check)
 					{
-						this.fleet.Count++;
-						this.fleet.BotShips[this.fleet.Count - 1] = new BotShip(i, position, orientation, this.fleet.Count, coordinates.X, coordinates.Y);
-						BotShip curShip = this.fleet.BotShips[this.fleet.Count - 1];
+						this.fleet.UpCount();
+						this.fleet.BotShips[this.fleet.Count() - 1] = new BotShip(i, position, orientation, this.fleet.Count(), coordinates.X, coordinates.Y);
+						BotShip curShip = this.fleet.BotShips[this.fleet.Count() - 1];
 						this.markShips(curShip);
 						this.SelectionArea(curShip);
 					}
@@ -73,7 +73,7 @@ public class BotMap extends Map<Integer> {
 	
 	public int countShipsAlive()
 	{
-		return this.fleet.Count;
+		return this.fleet.Count();
 	}
 	
 	
@@ -104,7 +104,7 @@ public class BotMap extends Map<Integer> {
 			this.map[position] = 0;
 			if (currentState == State.killed)
 			{
-				this.fleet.Count--;
+				this.fleet.DownCount();
 				return Report.kill;
 			}
 			else

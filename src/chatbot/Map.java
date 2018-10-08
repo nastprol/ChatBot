@@ -77,6 +77,6 @@ public abstract class Map<T> {
 	public abstract void Set(int position, T report);
 	public int countShipsAlive()
 	{
-		return this.fleet.Count;
+		return this.fleet.Count();
 	}
 }

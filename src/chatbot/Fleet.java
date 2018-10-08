@@ -1,13 +1,13 @@
 package chatbot; 
 
 public class Fleet {
-	public int Count = 0;
+	private int count = 0;
 	public PlayerShip[] Ships;
 	public BotShip[] BotShips;
 
 	public Fleet(int size){
 		Ships = new PlayerShip[size];
-		Count = size;
+		count = size;
 		for (int i = 0; i < 4; i++) {
 			this.Ships[i] = new PlayerShip(1, 100);
 		}
@@ -23,12 +23,17 @@ public class Fleet {
 		this.Ships[9] = new PlayerShip(4, 100);
 	}
 	
+	public int Count()
+	{
+		return this.count;
+	}
+	
 	public Fleet(int size, String report)
 	{
 		if (report.compareTo("BotShips") == 0)
 		{
 			this.BotShips = new BotShip[size];
-			Count = 0;
+			count = 0;
 		}
 	}
 	
@@ -41,6 +46,16 @@ public class Fleet {
 			}
 			
 		}
-		this.Count--;
+		this.DownCount();
+	}
+	
+	public void UpCount()
+	{
+		this.count++;
+	}
+	
+	public void DownCount()
+	{
+		this.count--;
 	}
 }

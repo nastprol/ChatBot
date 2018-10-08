@@ -131,7 +131,7 @@ public class Game implements IGame {
 			if (report == Report.miss)
 				PlayerMap.Set(Position, Report.miss);
 		}
-		IsActive = PlayerMap.fleet.Count != 0;
+		IsActive = PlayerMap.fleet.Count() != 0;
 	}
 
 	public Tuple Shoot() {
