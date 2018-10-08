@@ -4,6 +4,10 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
+import chatbot.Chatbot;
+import chatbot.GameFactory;
+import chatbot.IGame;
+
 class testChatBot {
 
 	@Test

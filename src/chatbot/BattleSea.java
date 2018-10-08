@@ -3,14 +3,15 @@ package chatbot;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class Game implements IGame {
+public class BattleSea implements IGame {
 
 	private Map<Report> PlayerMap;
-	private Boolean IsActive;
-	private Boolean FindNextShip;
+	private boolean IsActive;
+	private boolean FindNextShip;
 	private PlayerShip CurrentShip;
 	private int Position;
 	private Map<Integer> BotMap;
+	private boolean isPlayerTurn;
 
 	private String introductionMessage = "This is game Sea Battle. Your turn is first.\n "
 			+ "You have field 10*10. There are one 4-deck, two 3-deck, three 2-deck \n"
@@ -20,66 +21,47 @@ public class Game implements IGame {
 	public String GetIntroductionMessage() {
 		return introductionMessage;
 	}
-	
-	@Override
-	public String Play(String command) {
-		if (!this.isActive())
-			return "Game wasn't started";
-		switch (command) {
-		case "damage": {
-			UpdatePlayerMap(Report.damage);
-			var point = Shoot();
-			return point.toString();
-		}
-		case "kill": {
-			UpdatePlayerMap(Report.kill);
-			var point = Shoot();
-			return point.toString();
-		}
-		case "miss": {
-			UpdatePlayerMap(Report.miss);
-			return "Your turn";
-		}
-		default: {
-			try {
-				var coord = command.split(" ");
-				var y = Integer.parseInt(coord[1]) - 1;
-				var x = (int) coord[0].charAt(0) - 96;
-				if (coordinatesInFormat(x, y))
-					return Check(x, y);
-			} catch (Exception e) {
-				return "Send me coordinates in format <A-I> <1-10>";
-			}
-			return "Send me coordinates in format <A-I> <1-10>";
-		}
-		}
-	}
 
-	public Game() {
+	public BattleSea() {
 		PlayerMap =  new PlayerMap();
 		IsActive = false;
 		FindNextShip = true;
 		CurrentShip = new PlayerShip(0, 0);
 		Position = 0;
 		BotMap = new BotMap();
+		isPlayerTurn = true;
 	}
 	
-	public Game(Map map) {
+	public BattleSea(Map<Integer> map) {
 		PlayerMap =  new PlayerMap();
 		IsActive = false;
 		FindNextShip = true;
 		CurrentShip = new PlayerShip(0, 0);
 		Position = 0;
 		BotMap = map;
+		isPlayerTurn = true;
 	}
 
-	public Game(BotMap map,PlayerMap playerMap, Boolean findNextShip,PlayerShip ship,int position) {
+	public BattleSea(BotMap map,PlayerMap playerMap, boolean findNextShip,PlayerShip ship,int position) {
 		PlayerMap = playerMap;
 		IsActive = false;
 		FindNextShip = findNextShip;
 		CurrentShip = ship;
 		Position = position;
 		BotMap = map;
+		isPlayerTurn = true;
+	}
+
+	public boolean isPlayerTurn() {
+		return isPlayerTurn;
+	}
+
+	public void setPlayerTurn() {
+		isPlayerTurn = true;
+	}
+	
+	public void setNotPlayerTurn() {
+		isPlayerTurn = false;
 	}
 
 	@Override
@@ -170,10 +152,6 @@ public class Game implements IGame {
 		return bestShots.get(i);
 	}
 	
-	private Boolean coordinatesInFormat(int x, int y) {
-		return x < 10 && x > -1 && y < 10 && y > -1;
-	}
-	
 	private void FillProbabilityMap(int[] probability)
 	{
 		PlayerShip ship = new PlayerShip(0, 0);
@@ -206,7 +184,6 @@ public class Game implements IGame {
 		}
 	}
 
-	
 	private int ChooseShotToBeat(PlayerShip ship) {
 		ArrayList<Direction> directions = new ArrayList<Direction>();
 		int position = ship.position;
@@ -255,7 +232,7 @@ public class Game implements IGame {
 	}
 
 	@Override
-	public Boolean isActive() {
+	public boolean isActive() {
 		return this.IsActive;
 	}
 }

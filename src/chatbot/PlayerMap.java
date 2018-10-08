@@ -56,7 +56,7 @@ public class PlayerMap extends Map<Report> {
 
 
 	@Override
-	public Boolean CheckConditional(int position) {
+	public boolean CheckConditional(int position) {
 		return map[position] != Report.empty && this.map[position] != Report.damage;
 	}
 }

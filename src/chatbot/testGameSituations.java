@@ -1,5 +1,5 @@
 package chatbot;
-
+/*
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
@@ -16,7 +16,7 @@ class testGameSituations {
 	void testDamageOneShip() {
 
 		var map = new BotMap();
-		var game = new Game(map);
+		var game = new BattleSea(map);
 		var report = "";
 		game.SetActive();
 		for (var i = 0; i < 10; i++) {
@@ -34,7 +34,7 @@ class testGameSituations {
 	void testMissShip() {
 
 		var map = new BotMap();
-		var game = new Game(map);
+		var game = new BattleSea(map);
 		var report = "";
 		game.SetActive();
 		for (var i = 0; i < 10; i++) {
@@ -53,7 +53,7 @@ class testGameSituations {
 	void testKillAllShips() {
 
 		var map = new BotMap();
-		var game = new Game(map);
+		var game = new BattleSea(map);
 		var report = "";
 		game.SetActive();
 		var count = 0;
@@ -75,7 +75,7 @@ class testGameSituations {
 	void testKillPlayerShip() {
 
 		var map = new BotMap();
-		var game = new Game(map);
+		var game = new BattleSea(map);
 		game.SetActive();
 
 		for (var i = 0; i < 10; i++) {
@@ -85,4 +85,4 @@ class testGameSituations {
 	}
 	
 
-}
+}*/

@@ -27,7 +27,7 @@ public class BotMap extends Map<Integer> {
 	public void fillMap()
 	{
 		Random random = new Random();
-		Boolean check = false;
+		boolean check = false;
 		for(int i = 4; i > 0; i--)
 		{
 			for (int j = 1; j <= 5 - i; j ++)
@@ -115,7 +115,7 @@ public class BotMap extends Map<Integer> {
 	}
 
 	@Override
-	public Boolean CheckConditional(int position) {
+	public boolean CheckConditional(int position) {
 		return this.visetedCell.indexOf(position) == -1;
 	}
 

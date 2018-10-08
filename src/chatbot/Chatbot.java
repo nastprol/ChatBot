@@ -4,10 +4,12 @@ public class Chatbot {
 
 	private IGame game;
 	private IGameFactory gameFactory;
+	private IParser parser;
 
 	Chatbot(IGameFactory gameFactory) {
 		this.gameFactory = gameFactory;
 		game = this.gameFactory.create();
+		parser = this.gameFactory.createParser();
 	}
 	
 	public IGame getGame()
@@ -48,7 +50,7 @@ public class Chatbot {
 			return game.GetIntroductionMessage();
 		}
 		default: {
-			return game.Play(request);
+			return parser.ProcessPlayerAnswer(request);
 		}
 		}
 	}

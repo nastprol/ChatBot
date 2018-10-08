@@ -11,9 +11,9 @@ public abstract class Map<T> {
 		this.fleet = new Fleet(10);
 	}
 	
-	public Boolean CanStay( int checkCoordinats, int deck, int secondCoordinates, Orientation orientation)
+	public boolean CanStay( int checkCoordinats, int deck, int secondCoordinates, Orientation orientation)
 	{
-		Boolean result = true;
+		boolean result = true;
 		for(int j = checkCoordinats; j < checkCoordinats + deck; j++)
 		{
 			int position = (orientation == Orientation.vertically)
@@ -72,7 +72,7 @@ public abstract class Map<T> {
 	public abstract Report GetStateCell(int x, int y);
 	public abstract Report ChangeState(int x, int y);
 	public abstract void fillMap();
-	public abstract Boolean CheckConditional(int position);
+	public abstract boolean CheckConditional(int position);
 	public abstract Report GetStateCell(int position);
 	public abstract void Set(int position, T report);
 	public int countShipsAlive()
