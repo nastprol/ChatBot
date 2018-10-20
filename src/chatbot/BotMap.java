@@ -9,7 +9,7 @@ public class BotMap extends Map<Integer> {
 	private int[] map;
 	
 	BotMap()
-	{
+	{ 
 		super();
 		this.InitializePossibleCell();
 		this.fleet = new Fleet(10, "BotShips");
@@ -17,14 +17,14 @@ public class BotMap extends Map<Integer> {
 		fillMap();
 	}
 	
-	public void InitializePossibleCell()
+	private void InitializePossibleCell()
 	{
 		this.visetedCell = new ArrayList<Integer>();
 		for (int i = 0; i < 100; i++)
 			this.visetedCell.add(i);
 	}
-	@Override
-	public void fillMap()
+	
+	private void fillMap()
 	{
 		Random random = new Random();
 		boolean check = false;
@@ -78,20 +78,20 @@ public class BotMap extends Map<Integer> {
 	
 	
 	@Override
-	public void DoSomthingInArea(int position) {
+	protected void ProccessCell(int position) {
 		int index = this.visetedCell.indexOf(position);
 		if (index != -1)
 			this.visetedCell.remove(index);		
 	}
 
 	@Override
-	public Report GetStateCell(int x, int y) {
+	protected Report GetStateCell(int x, int y) {
 		int position = this.ChangeCoordinatesToPosition(x, y);
 		return GetStateCell(position);
 	}
 
 	@Override
-	public Report ChangeState(int x, int y) {
+	protected Report ChangeState(int x, int y) {
 		int position = this.ChangeCoordinatesToPosition(x, y);
 		if (this.map[position] == 0)
 		{
@@ -115,22 +115,20 @@ public class BotMap extends Map<Integer> {
 	}
 
 	@Override
-	public boolean CheckConditional(int position) {
+	protected boolean CheckConditional(int position) {
 		return this.visetedCell.indexOf(position) == -1;
 	}
 
 	@Override
-	public Report GetStateCell(int position) {
+	protected Report GetStateCell(int position) {
 		return (this.map[position] == 0)
 				? Report.miss
 				: Report.damage; 
 	}
 
 	@Override
-	public void Set(int position, Integer report) {
-		// TODO Auto-generated method stub
-		
+	protected void Set(int position, Report report) {
+		if (Report.damage == report || Report.kill == report)
+			this.map[position] = 0;
 	}
-
-
 }

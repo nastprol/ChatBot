@@ -1,5 +1,5 @@
 package chatbot;
 
 public interface IParser {
-	public String ProcessPlayerAnswer(String command);
+	public Reply ProcessPlayerAnswer(String command);
 }

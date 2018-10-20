@@ -12,7 +12,7 @@ public class BotShip extends Ship {
 	{	
 		super(position, orientation, countDeck);
 		this.X = x;
-		this.Y = y;
+		this.Y = y; 
 		this.IdNumber = number;
 		this.scoreAlive = countDeck;
 		this.state = State.alive;
@@ -43,7 +43,7 @@ public class BotShip extends Ship {
 		return this.scoreAlive;
 	}
 	
-	public void ÑhageState()
+	protected void ÑhageState()
 	{
 		this.scoreAlive--;
 		if (this.scoreAlive == 0)

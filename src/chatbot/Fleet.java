@@ -2,8 +2,8 @@
 
 public class Fleet {
 	private int count = 0;
-	public PlayerShip[] Ships;
-	public BotShip[] BotShips;
+	protected PlayerShip[] Ships;
+	protected BotShip[] BotShips;
 
 	public Fleet(int size){
 		Ships = new PlayerShip[size];
@@ -37,7 +37,7 @@ public class Fleet {
 		}
 	}
 	
-	public void RegisterKill(PlayerShip ship) {
+	protected void RegisterKill(PlayerShip ship) {
 
 		for (int i = 0; i < 10; i++) {
 			if (this.Ships[i].length == ship.length && this.Ships[i].position == 100) {
@@ -49,12 +49,12 @@ public class Fleet {
 		this.DownCount();
 	}
 	
-	public void UpCount()
+	protected void UpCount()
 	{
 		this.count++;
 	}
 	
-	public void DownCount()
+	protected void DownCount()
 	{
 		this.count--;
 	}

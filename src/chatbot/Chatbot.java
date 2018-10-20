@@ -1,5 +1,8 @@
 package chatbot;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class Chatbot {
 
 	private IGame game;
@@ -12,42 +15,42 @@ public class Chatbot {
 		parser = this.gameFactory.createParser();
 	}
 	
-	public IGame getGame()
-	{
+	protected IGame getGame() {
 		return game;
 	}
 
-	public String ProcessRequest(String userRequest) {
+	public Reply ProcessRequest(String userRequest) {
 
 		String request = userRequest.toLowerCase();
 		switch (request) {
-		case "exit":{
+		case "/help":{
+			return new Reply("/exit if you wanna leave this game\n"
+					+ "/start if you wanna start or restart game\n"
+					+ "/whoareyou if you wanna get know game's rules", null);
+		}
+		case "/exit":{
 			this.game.SetInactive();
-			return "Game is over";
+			return new Reply("Game is over", null);
 		}
 		case "":
 		{
-			return "";
+			return new Reply("", null);
 		}
 		case "\n":
 		{
-			return "";
+			return new Reply("", null);
 		}
-		case "restart": {
-			game = this.gameFactory.create();
-			game.SetActive();
-			return "New game is started"; 
-
-		}
-		case "start": {
-			if (!game.isActive()) {
-				game.SetActive();
+		case "/start": {
+			if (game.isActive()) {
+				game = this.gameFactory.create();
+				parser = this.gameFactory.createParser();
 			}
-			return game.GetIntroductionMessage();
-
+			game.SetActive();
+			
+			return new Reply(game.GetIntroductionMessage(), null);
 		}
-		case "who are you": {
-			return game.GetIntroductionMessage();
+		case "/whoareyou": {
+			return new Reply(game.GetIntroductionMessage(), null);
 		}
 		default: {
 			return parser.ProcessPlayerAnswer(request);

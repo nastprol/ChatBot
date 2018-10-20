@@ -4,9 +4,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-import chatbot.BotMap;
-import chatbot.Report;
-
 class testBotMap {
 
 	int CountDamagedCell(BotMap botMap)

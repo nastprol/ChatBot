@@ -13,24 +13,6 @@ class testGame {
 		String sX = String.valueOf((char) (x + 96));
 		return sX + " " + sY;
 	}
-
-	/*@Test
-	void test() {
-		
-		BotMap map = new BotMap();
-		BattleSea game = new BattleSea(map,new PlayerMap(), true,new PlayerShip(0,0),0);
-		String report = "";
-		game.SetActive();
-		for(int i = 0; i < 10; i++) {
-			for (int j = 0; j < 10; j++)
-			{
-				if (map.GetStateCell(i, j) != Report.miss) {
-					report = game.Play(CoordinatesToString(i, j));
-				}
-			}
-		}
-		assertEquals(report == "damage" || report == "kill", true);
-	}*/
 	
 	@Test
 	void testUpdatePlayerMapForOneShip() {

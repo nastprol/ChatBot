@@ -1,8 +1,12 @@
 package chatbot;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class Parser implements IParser {
 	
 	private BattleSea game;
+	private ArrayList answers = new ArrayList(Arrays.asList("miss", "kill", "damage"));
 	
 	public Parser(BattleSea game) {
 		this.game = game;
@@ -12,36 +16,36 @@ public class Parser implements IParser {
 		return x < 10 && x > -1 && y < 10 && y > -1;
 	} 
 	
-	public String ProcessPlayerAnswer(String command) {
+	public Reply ProcessPlayerAnswer(String command) {
 		if (!game.isActive())
-			return "Game wasn't started";
+			return new Reply("Game wasn't started", null);
 		switch (command) {
 		case "damage": {
 			if (game.isPlayerTurn())
-				return "It's your turn";
+				return new Reply("It's your turn to shoot", null);
 			game.UpdatePlayerMap(Report.damage);
 			var point = game.Shoot();
 			game.setNotPlayerTurn();
-			return point.toString();
+			return new Reply(point.toString(), answers);
 		}
 		case "kill": {
 			if (game.isPlayerTurn())
-				return "It's your turn";
+				return new Reply("It's your turn to shoot", null);
 			game.UpdatePlayerMap(Report.kill);
 			var point = game.Shoot();
 			game.setNotPlayerTurn();
-			return point.toString();
+			return new Reply(point.toString(), answers);
 		}
 		case "miss": {
 			if (game.isPlayerTurn())
-				return "It's your turn";
+				return new Reply("It's your turn to shoot", null);
 			game.UpdatePlayerMap(Report.miss);
 			game.setPlayerTurn();
-			return "Your turn";
+			return new Reply("Your turn to shoot", null);
 		}
 		default: {
 			if (!game.isPlayerTurn())
-				return "It's not your turn";
+				return new Reply("It's not your turn to shoot", null);
 			try {
 				var coord = command.split(" ");
 				var y = Integer.parseInt(coord[1]) - 1;
@@ -54,13 +58,14 @@ public class Parser implements IParser {
 					if (a.equals("miss"))
 					{
 						game.setNotPlayerTurn();
+						return new Reply(check, answers);
 					}
-					return check;
+					return new Reply(check, null);
 				}
 			} catch (Exception e) {
-				return "Send me coordinates in format <A-I> <1-10>";
+				return new Reply("Send me coordinates in format <A-I> <1-10>", null);
 			}
-			return "Send me coordinates in format <A-I> <1-10>";
+			return new Reply("Send me coordinates in format <A-I> <1-10>", null);
 		}
 		}
 	}

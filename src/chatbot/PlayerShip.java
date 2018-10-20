@@ -12,13 +12,13 @@ public class PlayerShip extends Ship {
 		super(position, orientation, length);
 	}
 	
-	public void FirstUpdate(int position) {
+	protected void FirstUpdate(int position) {
 		this.position = position;
 		this.orientation = Orientation.unknown;
 		this.length = 1;
 	}
 	
-	public void MoveShip(int position) {
+	protected void MoveShip(int position) {
 		if (this.orientation == Orientation.unknown) {
 			if (this.position % 10 == position % 10)
 				this.orientation = Orientation.vertically;
@@ -28,8 +28,5 @@ public class PlayerShip extends Ship {
 		if (this.position > position)
 			this.position = position;
 		this.length++;
-
 	}
-
-
 }
