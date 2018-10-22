@@ -17,4 +17,4 @@ public class Ship {
 		this.position = position;
 		this.orientation = orientation;
 	}
-}
+} 

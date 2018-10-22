@@ -38,7 +38,7 @@ public abstract class Map<T> {
 		return new Tuple(position % this.size, position / this.size);
 	}
 	
-	public void SelectionArea(Ship ship)
+	protected void SelectionArea(Ship ship)
 	{
 		Tuple coordinate = this.ChangePositionToCoordinates(ship.position);
 		int y = coordinate.Y;
@@ -51,31 +51,28 @@ public abstract class Map<T> {
 			this.GoToMap(startX, startY, startX + 3, startY + ship.length + 2);
 	}
 	
-	public void GoToMap(int startX, int startY, int endX, int endY)
+	protected void GoToMap(int startX, int startY, int endX, int endY)
 	{
 		for (int i = startX; i < endX; i++)
 		{
 			for(int j = startY; j < endY; j++)
 			{
-
 				if (j < 10 && i < 10)
-
 				{
-
 					int position = this.ChangeCoordinatesToPosition(i, j);
-					this.DoSomthingInArea(position);
+					this.ProccessCell(position);
 				}
 			}
 		}
 	}
-	public abstract void DoSomthingInArea(int position);
-	public abstract Report GetStateCell(int x, int y);
-	public abstract Report ChangeState(int x, int y);
-	public abstract void fillMap();
-	public abstract boolean CheckConditional(int position);
-	public abstract Report GetStateCell(int position);
-	public abstract void Set(int position, T report);
-	public int countShipsAlive()
+	
+	protected abstract void ProccessCell(int position);
+	protected abstract Report GetStateCell(int x, int y);
+	protected abstract Report ChangeState(int x, int y);
+	protected abstract boolean CheckConditional(int position);
+	protected abstract Report GetStateCell(int position);
+	protected abstract void Set(int position, Report report);
+	protected int countShipsAlive()
 	{
 		return this.fleet.Count();
 	}

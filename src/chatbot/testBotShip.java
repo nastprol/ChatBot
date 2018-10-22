@@ -4,10 +4,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-import chatbot.BotShip;
-import chatbot.Orientation;
-import chatbot.State;
-
 class testBotShip {
 
 	int sizeMap = 10;

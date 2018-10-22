@@ -1,6 +1,7 @@
 package chatbot;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
 
 public class BattleSea implements IGame {
@@ -71,10 +72,10 @@ public class BattleSea implements IGame {
 
 	@Override
 	public void SetInactive() {
-		IsActive = false;
+		IsActive = false; 
 	}
 
-	public String Check(int x, int y) {
+	protected String Check(int x, int y) {
 		Report report = this.BotMap.ChangeState(x, y);
 		String answer = report.toString();
 		if (report == Report.miss) {
@@ -85,7 +86,7 @@ public class BattleSea implements IGame {
 		return answer;
 	}
 
-	public void UpdatePlayerMap(Report report) {
+	protected void UpdatePlayerMap(Report report) {
 		if (FindNextShip) {
 			FindNextShip = report != Report.damage;
 			if (report == Report.damage) {
@@ -116,7 +117,7 @@ public class BattleSea implements IGame {
 		IsActive = PlayerMap.fleet.Count() != 0;
 	}
 
-	public Tuple Shoot() {
+	protected Tuple Shoot() {
 		if (FindNextShip) {
 			Position = FindNewShip();
 		} else {
