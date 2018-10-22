@@ -19,7 +19,7 @@ public class Chatbot {
 		return game;
 	}
 
-	public Reply ProcessRequest(String userRequest) {
+	public Reply ProcessRequest(String userRequest, int id) {
 
 		String request = userRequest.toLowerCase();
 		switch (request) {
@@ -53,7 +53,7 @@ public class Chatbot {
 			return new Reply(game.GetIntroductionMessage(), null);
 		}
 		default: {
-			return parser.ProcessPlayerAnswer(request);
+			return parser.ProcessPlayerAnswer(request, id);
 		}
 		}
 	}

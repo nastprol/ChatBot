@@ -6,7 +6,7 @@ import java.util.Arrays;
 public class Parser implements IParser {
 	
 	private BattleSea game;
-	private ArrayList answers = new ArrayList(Arrays.asList("miss", "kill", "damage"));
+	private final ArrayList answers = new ArrayList(Arrays.asList("miss", "kill", "damage"));
 	
 	public Parser(BattleSea game) {
 		this.game = game;
@@ -16,7 +16,8 @@ public class Parser implements IParser {
 		return x < 10 && x > -1 && y < 10 && y > -1;
 	} 
 	
-	public Reply ProcessPlayerAnswer(String command) {
+	public Reply ProcessPlayerAnswer(String command, int id) {
+		game.initPlayerGame(id);
 		if (!game.isActive())
 			return new Reply("Game wasn't started", null);
 		switch (command) {

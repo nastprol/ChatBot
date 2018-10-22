@@ -1,6 +1,9 @@
 package chatbot;
 
 import java.util.ArrayList;
+import db.DataBase;
+import db.DataItem;
+
 import java.util.Arrays;
 import java.util.Random;
 
@@ -13,6 +16,9 @@ public class BattleSea implements IGame {
 	private int Position;
 	private Map<Integer> BotMap;
 	private boolean isPlayerTurn;
+	private int playerID;
+	
+	private DataBase db;
 
 	private String introductionMessage = "This is game Sea Battle. Your turn is first.\n "
 			+ "You have field 10*10. There are one 4-deck, two 3-deck, three 2-deck \n"
@@ -24,7 +30,12 @@ public class BattleSea implements IGame {
 	}
 
 	public BattleSea() {
-		PlayerMap =  new PlayerMap();
+
+		db = new DataBase();
+		db.initDatabase();
+		db.connect();
+
+		PlayerMap = new PlayerMap();
 		IsActive = false;
 		FindNextShip = true;
 		CurrentShip = new PlayerShip(0, 0);
@@ -33,8 +44,23 @@ public class BattleSea implements IGame {
 		isPlayerTurn = true;
 	}
 	
+	//TODO записывать данные
+
+	public void initPlayerGame(int id) { 
+
+		//TODO переписать данные, если можем
+		PlayerMap = new PlayerMap();
+		IsActive = false;
+		FindNextShip = true;
+		CurrentShip = new PlayerShip(0, 0);
+		Position = 0;
+		BotMap = new BotMap();
+		isPlayerTurn = true;
+		playerID = id;
+	}
+
 	public BattleSea(Map<Integer> map) {
-		PlayerMap =  new PlayerMap();
+		PlayerMap = new PlayerMap();
 		IsActive = false;
 		FindNextShip = true;
 		CurrentShip = new PlayerShip(0, 0);
@@ -43,7 +69,7 @@ public class BattleSea implements IGame {
 		isPlayerTurn = true;
 	}
 
-	public BattleSea(BotMap map,PlayerMap playerMap, boolean findNextShip,PlayerShip ship,int position) {
+	public BattleSea(BotMap map, PlayerMap playerMap, boolean findNextShip, PlayerShip ship, int position) {
 		PlayerMap = playerMap;
 		IsActive = false;
 		FindNextShip = findNextShip;
@@ -60,7 +86,7 @@ public class BattleSea implements IGame {
 	public void setPlayerTurn() {
 		isPlayerTurn = true;
 	}
-	
+
 	public void setNotPlayerTurn() {
 		isPlayerTurn = false;
 	}
@@ -72,7 +98,7 @@ public class BattleSea implements IGame {
 
 	@Override
 	public void SetInactive() {
-		IsActive = false; 
+		IsActive = false;
 	}
 
 	protected String Check(int x, int y) {
@@ -91,20 +117,20 @@ public class BattleSea implements IGame {
 			FindNextShip = report != Report.damage;
 			if (report == Report.damage) {
 				CurrentShip.FirstUpdate(Position);
-				PlayerMap.Set(Position,Report.damage);
+				PlayerMap.Set(Position, Report.damage);
 			} else if (report == Report.kill) {
 				CurrentShip.FirstUpdate(Position);
 				PlayerMap.Set(Position, Report.kill);
 				PlayerMap.SelectionArea(CurrentShip);
 				PlayerMap.fleet.RegisterKill(CurrentShip);
 			} else {
-				PlayerMap.Set(Position,Report.miss);
+				PlayerMap.Set(Position, Report.miss);
 			}
 		} else {
 			FindNextShip = report == Report.kill;
 			if (report != Report.miss) {
 				CurrentShip.MoveShip(Position);
-				PlayerMap.Set(Position,Report.damage);
+				PlayerMap.Set(Position, Report.damage);
 
 			}
 			if (report == Report.kill) {
@@ -129,12 +155,12 @@ public class BattleSea implements IGame {
 
 	private Integer FindNewShip() {
 		int[] probability = new int[100];
-		FillProbabilityMap(probability);		
+		FillProbabilityMap(probability);
 		int max = 0;
 		ArrayList<Integer> bestShots = new ArrayList<Integer>();
 		for (int k = 0; k < 100; k++) {
 			if (probability[k] >= max) {
-				if (probability[k] == max) 
+				if (probability[k] == max)
 					bestShots.add(k);
 				else {
 					max = probability[k];
@@ -152,9 +178,8 @@ public class BattleSea implements IGame {
 		}
 		return bestShots.get(i);
 	}
-	
-	private void FillProbabilityMap(int[] probability)
-	{
+
+	private void FillProbabilityMap(int[] probability) {
 		PlayerShip ship = new PlayerShip(0, 0);
 		ship.length = 0;
 		for (int i = 0; i < 10; i++) {
@@ -164,14 +189,14 @@ public class BattleSea implements IGame {
 		Tuple coordinat;
 		for (int j = 0; j < 100; j++) {
 			coordinat = PlayerMap.ChangePositionToCoordinates(j);
-			ship.position =j;
-			if (PlayerMap.CanStay(coordinat.X, ship.length,coordinat.Y, Orientation.horizontally ))
+			ship.position = j;
+			if (PlayerMap.CanStay(coordinat.X, ship.length, coordinat.Y, Orientation.horizontally))
 				PlusHorizontally(ship, probability);
 			if (PlayerMap.CanStay(coordinat.Y, ship.length, coordinat.X, Orientation.vertically))
 				PlusVertically(ship, probability);
 		}
 	}
-	
+
 	private void PlusHorizontally(PlayerShip ship, int[] field) {
 		for (int i = ship.position; i < ship.position + ship.length; i++)
 			field[i]++;
@@ -189,8 +214,7 @@ public class BattleSea implements IGame {
 		ArrayList<Direction> directions = new ArrayList<Direction>();
 		int position = ship.position;
 		FillDirections(directions, ship);
-		
-		
+
 		int size = directions.size();
 		Direction direction = directions.get(0);
 		if (size > 1) {
@@ -209,22 +233,21 @@ public class BattleSea implements IGame {
 
 		return position;
 	}
-	
-	private void FillDirections(ArrayList<Direction> directions, PlayerShip ship)
-	{
-		
+
+	private void FillDirections(ArrayList<Direction> directions, PlayerShip ship) {
+
 		Tuple coordinat = PlayerMap.ChangePositionToCoordinates(ship.position);
 
 		if (ship.orientation != Orientation.vertically) {
 			if (ship.position - 1 >= 0 && PlayerMap.GetStateCell(ship.position - 1) == Report.empty)
 				directions.add(Direction.left);
-			
-			if (PlayerMap.CanStay(coordinat.X, ship.length+1,coordinat.Y, Orientation.horizontally) )
+
+			if (PlayerMap.CanStay(coordinat.X, ship.length + 1, coordinat.Y, Orientation.horizontally))
 				directions.add(Direction.right);
 		}
-		
+
 		if (ship.orientation != Orientation.horizontally) {
-			if (PlayerMap.CanStay(coordinat.Y,ship.length+1,coordinat.X,  Orientation.vertically) )
+			if (PlayerMap.CanStay(coordinat.Y, ship.length + 1, coordinat.X, Orientation.vertically))
 				directions.add(Direction.down);
 			int upPosition = ship.position - 10 * ship.length;
 			if (upPosition >= 0 && PlayerMap.GetStateCell(upPosition) == Report.empty)

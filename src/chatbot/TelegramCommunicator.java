@@ -42,7 +42,7 @@ public class TelegramCommunicator extends TelegramLongPollingBot {
     @Override
     public void onUpdateReceived(Update update) {
         try {
-            Reply reply = chatbot.ProcessRequest(update.getMessage().getText());
+            Reply reply = chatbot.ProcessRequest(update.getMessage().getText(), update.getMessage().getFrom().getId());
 
             var sendMessage = new SendMessage(update.getMessage().getChatId(), 
             		reply.botAnswer);
