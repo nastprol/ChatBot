@@ -52,7 +52,7 @@ public class DataBase {
 		try {
 			if (c.isClosed())
 				tryConnect();
-			PreparedStatement stmt = c.prepareStatement("SELECT * FROM seabattle WHERE id = ?;");
+			PreparedStatement stmt = c.prepareStatement("SELECT * FROM seabattle WHERE user_id = ?;");
 			stmt.setInt(1, userId);
 			ResultSet rs = stmt.executeQuery();
 
@@ -92,7 +92,7 @@ public class DataBase {
 	}
 
 	private void removeUserData(int userId) {
-		runSql(userId, "DELETE FROM seabattle WHERE id = ?");
+		runSql(userId, "DELETE FROM seabattle WHERE user_id = ?");
 	}
 
 	private void runSql(int userId, String command) {
@@ -119,7 +119,9 @@ public class DataBase {
 
 			PreparedStatement stmt;
 			stmt = c.prepareStatement(
-					"INSERT INTO seabattle (id, current_question_id, game_active) VALUES(?, ?, TRUE)");
+					"INSERT INTO seabattle () VALUES(?, ?, TRUE)");
+			
+			
 			stmt.setInt(1, userData.UserID);
 			stmt.setInt(2,userData.Position);
 			stmt.setArray(3, c.createArrayOf("int",  this.changeIntToInteger(userData.PlayerMap)));
@@ -159,7 +161,7 @@ public class DataBase {
 	public boolean checkId(int idUser)
 	{
 		boolean isUserExists = false;
-        try (PreparedStatement ps = c.prepareStatement("select 1 from seabattle where `user_id` = ?")) {
+        try (PreparedStatement ps = c.prepareStatement("select 1 from seabattle where user_id = ?")) {
             ps.setInt(1, idUser);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {

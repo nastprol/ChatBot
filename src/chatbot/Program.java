@@ -1,5 +1,8 @@
 package chatbot; 
 
+import java.net.Authenticator;
+import java.net.PasswordAuthentication;
+
 /*import java.util.Scanner;
 
 public class Program {
@@ -20,9 +23,6 @@ import org.telegram.telegrambots.bots.DefaultBotOptions;
 import org.telegram.telegrambots.meta.ApiContext;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiRequestException;
-
-import java.net.Authenticator;
-import java.net.PasswordAuthentication;
 
 public class Program {
 
@@ -50,7 +50,8 @@ public class Program {
                 DefaultBotOptions.ProxyType.SOCKS5 : DefaultBotOptions.ProxyType.NO_PROXY);
 
 		try {
-			botsApi.registerBot(new TelegramCommunicator(botOptions));
+			var tg = new TelegramCommunicator(botOptions);
+			botsApi.registerBot(tg);
 		} catch (TelegramApiRequestException e) {
 			e.printStackTrace();
 		}
