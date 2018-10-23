@@ -11,6 +11,13 @@ public class PlayerMap extends Map<Report> {
 		fillMap(); 
 	}
 	
+	public PlayerMap(int[] playerMap, int PlayerFleetCount, 
+			int[] fleetShipsPosition, int[] fleetShipOrientation )
+	{
+		this.fleet = new Fleet(PlayerFleetCount, fleetShipsPosition, fleetShipOrientation);
+		this.ChangeIntToReport(playerMap);
+	}
+	
 	@Override
 	protected void Set(int position,Report report)
 	{
@@ -30,6 +37,20 @@ public class PlayerMap extends Map<Report> {
 		}
 	}
 	
+	@Override
+	public int[] ChangeReportToInt() {
+		int[] result = new int[map.length];
+		for(int i = 0; i<map.length;i++)
+			result[i] = map[i].ordinal();
+		return result;
+		
+	}
+	
+	private void ChangeIntToReport( int[] mapOfInt) {
+		for(int i = 0; i< mapOfInt.length;i++)
+			map[i] = Report.values()[mapOfInt[i]];
+		
+	}
 	@Override
 	protected void ProccessCell(int position) {
 		if (this.map[position] == Report.empty)

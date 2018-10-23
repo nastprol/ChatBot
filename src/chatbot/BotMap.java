@@ -1,6 +1,7 @@
 package chatbot;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
 
 public class BotMap extends Map<Integer> {
@@ -15,6 +16,12 @@ public class BotMap extends Map<Integer> {
 		this.fleet = new Fleet(10, "BotShips");
 		this.map = new int[100];
 		fillMap();
+	}
+	
+	BotMap(int[] map, int count, int[] positions, int[] orientations, int[] countDecks, int[]scoreAlive)
+	{
+		this.map = Arrays.copyOf(map, map.length);
+		this.fleet = new Fleet(count, positions, orientations, countDecks, scoreAlive);
 	}
 	
 	private void InitializePossibleCell()
@@ -131,4 +138,15 @@ public class BotMap extends Map<Integer> {
 		if (Report.damage == report || Report.kill == report)
 			this.map[position] = 0;
 	}
+
+	@Override
+	public int[] ChangeReportToInt() {
+		int[] result = new int[map.length];
+		for (int i = 0; i < map.length; i++)
+			result[i] = map[i];
+		return result;
+	}
+
+		
+	
 }

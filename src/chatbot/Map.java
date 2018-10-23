@@ -72,6 +72,7 @@ public abstract class Map<T> {
 	protected abstract boolean CheckConditional(int position);
 	protected abstract Report GetStateCell(int position);
 	protected abstract void Set(int position, Report report);
+	public abstract int[] ChangeReportToInt();
 	protected int countShipsAlive()
 	{
 		return this.fleet.Count();

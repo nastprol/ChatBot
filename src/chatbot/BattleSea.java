@@ -7,6 +7,8 @@ import db.DataItem;
 import java.util.Arrays;
 import java.util.Random;
 
+import com.fasterxml.jackson.core.util.DefaultPrettyPrinter.Indenter;
+
 public class BattleSea implements IGame {
 
 	private Map<Report> PlayerMap;
@@ -17,6 +19,8 @@ public class BattleSea implements IGame {
 	private Map<Integer> BotMap;
 	private boolean isPlayerTurn;
 	private int playerID;
+	
+
 	
 	private DataBase db;
 
@@ -43,19 +47,31 @@ public class BattleSea implements IGame {
 		BotMap = new BotMap();
 		isPlayerTurn = true;
 	}
-	
-	//TODO записывать данные
 
 	public void initPlayerGame(int id) { 
 
-		//TODO переписать данные, если можем
-		PlayerMap = new PlayerMap();
-		IsActive = false;
-		FindNextShip = true;
-		CurrentShip = new PlayerShip(0, 0);
-		Position = 0;
-		BotMap = new BotMap();
-		isPlayerTurn = true;
+		if (db.checkId(id))
+		{
+			DataItem dataItem = db.getData(id);
+			PlayerMap = new PlayerMap(dataItem.PlayerMap,dataItem.PlayerFleetCount, 
+					dataItem.PlayerFleetShipsPosition,dataItem.PlayerFleetShipsOrientation);
+			IsActive = dataItem.IsActive;
+			FindNextShip = dataItem.FindNextShip;
+			CurrentShip = new PlayerShip(dataItem.CurrShipPosition,Orientation.values()[dataItem.CurrShipOrientation],dataItem.CurrShipLength);
+			Position = dataItem.Position;
+			BotMap = new BotMap(dataItem.Map, dataItem.BotCountAliveShips, dataItem.BotPositionShips, dataItem.BotOrientationShips,
+					dataItem.BotCountDeckShips, dataItem.BotScoreAliveShips);
+		}
+		else
+		{
+			PlayerMap = new PlayerMap();
+			IsActive = false;
+			FindNextShip = true;
+			CurrentShip = new PlayerShip(0, 0);
+			Position = 0;
+			BotMap = new BotMap();
+			isPlayerTurn = true;
+		}
 		playerID = id;
 	}
 
@@ -109,6 +125,8 @@ public class BattleSea implements IGame {
 			answer += "\n" + point.toString();
 		}
 		IsActive = BotMap.countShipsAlive() != 0;
+		db.setDataItem(playerID, new DataItem(playerID, Position, BotMap , PlayerMap, FindNextShip, IsActive, 
+				CurrentShip, PlayerMap.fleet, BotMap.fleet));
 		return answer;
 	}
 
@@ -141,6 +159,9 @@ public class BattleSea implements IGame {
 				PlayerMap.Set(Position, Report.miss);
 		}
 		IsActive = PlayerMap.fleet.Count() != 0;
+
+		db.setDataItem(playerID, new DataItem(playerID, Position, BotMap , PlayerMap, FindNextShip, IsActive, 
+			CurrentShip, PlayerMap.fleet, BotMap.fleet));
 	}
 
 	protected Tuple Shoot() {
@@ -149,8 +170,9 @@ public class BattleSea implements IGame {
 		} else {
 			Position = ChooseShotToBeat(CurrentShip);
 		}
+		db.setDataItem(playerID, new DataItem(playerID, Position, BotMap , PlayerMap, FindNextShip, IsActive, 
+				CurrentShip, PlayerMap.fleet, BotMap.fleet));
 		return PlayerMap.ChangePositionToCoordinates(Position);
-
 	}
 
 	private Integer FindNewShip() {

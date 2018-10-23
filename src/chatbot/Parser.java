@@ -25,7 +25,7 @@ public class Parser implements IParser {
 			if (game.isPlayerTurn())
 				return new Reply("It's your turn to shoot", null);
 			game.UpdatePlayerMap(Report.damage);
-			var point = game.Shoot();
+			Tuple point = game.Shoot();
 			game.setNotPlayerTurn();
 			return new Reply(point.toString(), answers);
 		}
@@ -33,7 +33,7 @@ public class Parser implements IParser {
 			if (game.isPlayerTurn())
 				return new Reply("It's your turn to shoot", null);
 			game.UpdatePlayerMap(Report.kill);
-			var point = game.Shoot();
+			Tuple point = game.Shoot();
 			game.setNotPlayerTurn();
 			return new Reply(point.toString(), answers);
 		}
@@ -48,14 +48,14 @@ public class Parser implements IParser {
 			if (!game.isPlayerTurn())
 				return new Reply("It's not your turn to shoot", null);
 			try {
-				var coord = command.split(" ");
-				var y = Integer.parseInt(coord[1]) - 1;
-				var x = (int) coord[0].charAt(0) - 96;
+				String[] coord = command.split(" ");
+				int y = Integer.parseInt(coord[1]) - 1;
+				int x = (int) coord[0].charAt(0) - 96;
 				game.setPlayerTurn();
 				if (coordinatesInFormat(x, y))
 				{
 					String check = game.Check(x, y);
-					var a = check.split("\n")[0];
+					String a = check.split("\n")[0];
 					if (a.equals("miss"))
 					{
 						game.setNotPlayerTurn();

@@ -8,33 +8,33 @@ class testChatBot {
 
 	@Test
 	void testExitGame(){
-		var gameFactory = new GameFactory();
-		var bot = new Chatbot(gameFactory);
-		var game = gameFactory.create();
-		var answer = bot.ProcessRequest("exit");
+		GameFactory gameFactory = new GameFactory();
+		Chatbot bot = new Chatbot(gameFactory);
+		IGame game = gameFactory.create();
+		Reply answer = bot.ProcessRequest("exit",3);
 		assertEquals(game.isActive(), false);
 	}
 	
 	@Test
 	void testStartGame(){
-		var gameFactory = new GameFactory();
-		var bot = new Chatbot(gameFactory);
-		var game = bot.getGame();
+		GameFactory gameFactory = new GameFactory();
+		Chatbot bot = new Chatbot(gameFactory);
+		IGame game = bot.getGame();
 		assertEquals(game.isActive(), false);
-		var answer = bot.ProcessRequest("start");
+		Reply answer = bot.ProcessRequest("start",4);
 		assertEquals(game.isActive(), true);
 	}
 	
 	@Test
 	void testRestartGame(){
-		var gameFactory = new GameFactory();
-		var bot = new Chatbot(gameFactory);
-		var game = bot.getGame();
-		var answer = bot.ProcessRequest("start");
+		GameFactory gameFactory = new GameFactory();
+		Chatbot bot = new Chatbot(gameFactory);
+		IGame game = bot.getGame();
+		Reply answer = bot.ProcessRequest("start",3);
 		assertEquals(game.isActive(), true);
-		answer = bot.ProcessRequest("exit");
+		answer = bot.ProcessRequest("exit",3);
 		assertEquals(game.isActive(), false);
-		answer = bot.ProcessRequest("restart");
+		answer = bot.ProcessRequest("restart",3);
 		assertEquals(bot.getGame().isActive(), true);
 	}
 }

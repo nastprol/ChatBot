@@ -44,7 +44,7 @@ public class TelegramCommunicator extends TelegramLongPollingBot {
         try {
             Reply reply = chatbot.ProcessRequest(update.getMessage().getText(), update.getMessage().getFrom().getId());
 
-            var sendMessage = new SendMessage(update.getMessage().getChatId(), 
+            SendMessage sendMessage = new SendMessage(update.getMessage().getChatId(), 
             		reply.botAnswer);
             if (reply.keyboardOptions != null) {
                 sendMessage.setReplyMarkup(setKeyboard(reply.keyboardOptions));

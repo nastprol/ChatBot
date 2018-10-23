@@ -23,6 +23,46 @@ public class Fleet {
 		this.Ships[9] = new PlayerShip(4, 100);
 	}
 	
+	public Fleet(int size, int[] positions, int[] indexesOfOrintation){
+		Ships = new PlayerShip[10];
+		count = size;
+		Orientation[] orientations = Orientation.values();
+		for (int i = 0; i < 4; i++) {
+			this.Ships[i] = new PlayerShip(positions[i],orientations[indexesOfOrintation[i]], 1);
+		}
+		;
+		for (int i = 0; i < 3; i++) {
+			this.Ships[4+i] = new PlayerShip(positions[4+i],orientations[indexesOfOrintation[4+i]], 2);
+		}
+		;
+		for (int i = 0; i < 2; i++) {
+			this.Ships[i+7] = new PlayerShip(positions[7+i],orientations[indexesOfOrintation[7+i]], 3);
+		}
+		;
+		this.Ships[9] = new PlayerShip(positions[9],orientations[indexesOfOrintation[9]], 4);
+	}
+	
+	public Fleet(int count, int[] positions, int[] orientations, int[] countDecks, int[]scoreAlive)
+	{
+		this.count = count;
+		this.BotShips = new BotShip[10];
+		for(int i = 0; i< positions.length; i++)
+		{
+			Orientation orientation = (orientations[i] == Orientation.horizontally.ordinal())
+					? Orientation.horizontally
+					: Orientation.vertically;
+			this.BotShips[i] = new BotShip(countDecks[i], positions[i], orientation, i + 1, scoreAlive[i]);
+		}
+	}
+	
+	public Ship getPlayerShip(int index) {
+		return Ships[index];
+	}
+	
+	public BotShip getBotShip(int index)
+	{
+		return this.BotShips[index];
+	}
 	public int Count()
 	{
 		return this.count;
