@@ -1,5 +1,7 @@
 # ChatBot
 
+This Chatbot is Telegrambot that is able to play Battleship game
+
 реализации не должны зависеть от других реализаций, а должны зависеть от абстракций Game Map фабрика для игр git
 
 Дублирование(Tuple и POint) game parser и отделить логику
