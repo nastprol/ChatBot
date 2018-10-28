@@ -139,7 +139,7 @@ public class BattleSea implements IGame {
 			} else if (report == Report.kill) {
 				CurrentShip.FirstUpdate(Position);
 				PlayerMap.Set(Position, Report.kill);
-				PlayerMap.SelectionArea(CurrentShip);
+				PlayerMap.SelectionArea(CurrentShip, null);
 				PlayerMap.fleet.RegisterKill(CurrentShip);
 			} else {
 				PlayerMap.Set(Position, Report.miss);
@@ -152,7 +152,7 @@ public class BattleSea implements IGame {
 
 			}
 			if (report == Report.kill) {
-				PlayerMap.SelectionArea(CurrentShip);
+				PlayerMap.SelectionArea(CurrentShip, null);
 				PlayerMap.fleet.RegisterKill(CurrentShip);
 			}
 			if (report == Report.miss)
@@ -212,9 +212,9 @@ public class BattleSea implements IGame {
 		for (int j = 0; j < 100; j++) {
 			coordinat = PlayerMap.ChangePositionToCoordinates(j);
 			ship.position = j;
-			if (PlayerMap.CanStay(coordinat.X, ship.length, coordinat.Y, Orientation.horizontally))
+			if (PlayerMap.CanStay(coordinat.X, ship.length, coordinat.Y, Orientation.horizontally, null))
 				PlusHorizontally(ship, probability);
-			if (PlayerMap.CanStay(coordinat.Y, ship.length, coordinat.X, Orientation.vertically))
+			if (PlayerMap.CanStay(coordinat.Y, ship.length, coordinat.X, Orientation.vertically, null))
 				PlusVertically(ship, probability);
 		}
 	}
@@ -264,12 +264,12 @@ public class BattleSea implements IGame {
 			if (ship.position - 1 >= 0 && PlayerMap.GetStateCell(ship.position - 1) == Report.empty)
 				directions.add(Direction.left);
 
-			if (PlayerMap.CanStay(coordinat.X, ship.length + 1, coordinat.Y, Orientation.horizontally))
+			if (PlayerMap.CanStay(coordinat.X, ship.length + 1, coordinat.Y, Orientation.horizontally, null))
 				directions.add(Direction.right);
 		}
 
 		if (ship.orientation != Orientation.horizontally) {
-			if (PlayerMap.CanStay(coordinat.Y, ship.length + 1, coordinat.X, Orientation.vertically))
+			if (PlayerMap.CanStay(coordinat.Y, ship.length + 1, coordinat.X, Orientation.vertically, null))
 				directions.add(Direction.down);
 			int upPosition = ship.position - 10 * ship.length;
 			if (upPosition >= 0 && PlayerMap.GetStateCell(upPosition) == Report.empty)

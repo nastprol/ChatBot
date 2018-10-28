@@ -1,5 +1,7 @@
 package chatbot;
 
+import java.util.ArrayList;
+
 public class PlayerMap extends Map<Report> {
 	
 	private Report[] map;
@@ -52,7 +54,7 @@ public class PlayerMap extends Map<Report> {
 		
 	}
 	@Override
-	protected void ProccessCell(int position) {
+	protected void ProccessCell(int position, ArrayList<Report> array) {
 		if (this.map[position] == Report.empty)
 			this.map[position] = Report.round;
 		else
@@ -71,7 +73,7 @@ public class PlayerMap extends Map<Report> {
 	}
 
 	@Override
-	protected boolean CheckConditional(int position) {
+	protected boolean CheckConditional(int position, ArrayList<Report> array) {
 		return map[position] != Report.empty && this.map[position] != Report.damage;
 	}
 }

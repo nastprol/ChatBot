@@ -11,6 +11,10 @@ public class Ship {
 		this.position = position;
 	}
 	
+	public Ship()
+	{
+		
+	}
 	
 	public Ship(int position,Orientation orientation,int  length)
 	{

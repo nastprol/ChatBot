@@ -8,7 +8,7 @@ public class BotShip extends Ship {
 	public final int X;
 	public final int Y;
 	
-	BotShip(int countDeck, int position, Orientation orientation, int number, int x, int y)
+	public BotShip(int countDeck, int position, Orientation orientation, int number, int x, int y)
 	{	
 		super(position, orientation, countDeck);
 		this.X = x;
@@ -17,7 +17,13 @@ public class BotShip extends Ship {
 		this.scoreAlive = countDeck;
 		this.state = State.alive;
 	}
-	
+	public BotShip()
+	{
+		super();
+		this.X = 0;
+		this.Y = 0;
+		this.IdNumber = 0;
+	}
 	BotShip(int countDeck, int position, Orientation orientation, int number, int scoreAlive)
 	{
 		super(position, orientation, countDeck);

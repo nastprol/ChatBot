@@ -5,6 +5,8 @@ public class Fleet {
 	protected PlayerShip[] Ships;
 	protected BotShip[] BotShips;
 
+	public Fleet() {
+	}
 	public Fleet(int size){
 		Ships = new PlayerShip[size];
 		count = size;
@@ -97,5 +99,17 @@ public class Fleet {
 	protected void DownCount()
 	{
 		this.count--;
+	}
+	
+	public boolean EqualFleet(Fleet fleet)
+	{
+		boolean result = true;
+		for(var i = 0; i < fleet.BotShips.length; i++)
+		{
+			result = result &&(fleet.BotShips[i].IdNumber == this.BotShips[i].IdNumber)&&
+					(fleet.BotShips[i].length == this.BotShips[i].length)&&
+					(fleet.BotShips[i].orientation == this.BotShips[i].orientation);
+		}
+		return result;
 	}
 }
