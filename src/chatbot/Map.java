@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public abstract class Map<T> {
 	protected int size;
-	protected Fleet fleet;
+	public Fleet fleet;
 
 
 	public Map()
@@ -74,9 +74,23 @@ public abstract class Map<T> {
 	protected abstract boolean CheckConditional(int position, ArrayList<T> array);
 	protected abstract Report GetStateCell(int position);
 	protected abstract void Set(int position, Report report);
+	//protected abstract boolean EqualMapArray(Map<T> map);
 	public abstract int[] ChangeReportToInt();
 	protected int countShipsAlive()
 	{
 		return this.fleet.Count();
 	}
+
+	public Fleet getFleet() {
+		return this.fleet;
+	}
+	
+	/*public boolean EqualMap(Map<T> map)
+	{
+		boolean result = true;
+		result = result && this.size== map.size && this.fleet.EqualFleet(map.fleet) && this.EqualMapArray(map);
+		
+		return result;
+	}
+	*/	
 }

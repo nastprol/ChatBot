@@ -37,6 +37,7 @@ public class Program {
         TelegramBotsApi botsApi = new TelegramBotsApi();
 		Authenticator.setDefault(new Authenticator() {
 			
+			
 			@Override
 			public PasswordAuthentication getPasswordAuthentication() {
 				return new PasswordAuthentication(PROXY_USER, PROXY_PASSWORD.toCharArray());
@@ -50,10 +51,11 @@ public class Program {
                 DefaultBotOptions.ProxyType.SOCKS5 : DefaultBotOptions.ProxyType.NO_PROXY);
 
 		try {
-			var tg = new TelegramCommunicator(botOptions);
+			TelegramCommunicator tg = new TelegramCommunicator(botOptions);
 			botsApi.registerBot(tg);
 		} catch (TelegramApiRequestException e) {
 			e.printStackTrace();
 		}
+	
 	}
 }

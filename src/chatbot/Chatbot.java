@@ -3,16 +3,23 @@ package chatbot;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import db.DataBase;
+import db.IDataBase;
+
 public class Chatbot {
 
 	private IGame game;
 	private IGameFactory gameFactory;
 	private IParser parser;
+	private IDataBase db;
 
 	Chatbot(IGameFactory gameFactory) {
 		this.gameFactory = gameFactory;
-		game = this.gameFactory.create();
+		game = this.gameFactory.create(db,id); //откуда превый раз взять ID
 		parser = this.gameFactory.createParser();
+		db = new DataBase();
+		db.initDatabase();
+		db.connect();
 	}
 	
 	protected IGame getGame() {
@@ -42,7 +49,7 @@ public class Chatbot {
 		}
 		case "/start": {
 			if (game.isActive()) {
-				game = this.gameFactory.create();
+				game = this.gameFactory.create(db, id);
 				parser = this.gameFactory.createParser();
 			}
 			game.SetActive();

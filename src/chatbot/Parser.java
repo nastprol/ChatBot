@@ -16,8 +16,9 @@ public class Parser implements IParser {
 		return x < 10 && x > -1 && y < 10 && y > -1;
 	} 
 	
+
 	public Reply ProcessPlayerAnswer(String command, int id) {
-		game.initPlayerGame(id);
+	//	game.initPlayerGame(id);
 		if (!game.isActive())
 			return new Reply("Game wasn't started", null);
 		switch (command) {

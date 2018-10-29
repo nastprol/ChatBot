@@ -147,16 +147,15 @@ public class BotMap extends Map<Integer> {
 		return result;
 	}
 	
-	public Fleet getFleet()
-	{
-		return this.fleet;
-	}
-	
-	public boolean EqualMap(BotMap map)
-	{
+	public boolean EqualMap(BotMap botMap) {
 		boolean result = true;
-		for(var i = 0; i < this.map.length; i++)
-			result = result && map.map[i] == this.map[i];
+		/*if(!(map instanceof BotMap)) return false;
+		BotMap botMap = () map;
+		*/
+		for(int i = 0; i < this.map.length; i++)
+			result = result && botMap.map[i] == this.map[i];
 		return result;
-	}	
+	}
+
+	
 }

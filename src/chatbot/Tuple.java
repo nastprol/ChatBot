@@ -3,6 +3,12 @@ package chatbot;
 public class Tuple {
 	public final int X;
 	public final int Y;
+	
+	public Tuple()
+	{
+		this.X = 0;
+		this.Y = 0;
+	}
 
 	public Tuple(int x, int y) {
 		this.X = x;

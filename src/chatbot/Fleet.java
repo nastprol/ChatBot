@@ -104,7 +104,7 @@ public class Fleet {
 	public boolean EqualFleet(Fleet fleet)
 	{
 		boolean result = true;
-		for(var i = 0; i < fleet.BotShips.length; i++)
+		for(int i = 0; i < fleet.BotShips.length; i++)
 		{
 			result = result &&(fleet.BotShips[i].IdNumber == this.BotShips[i].IdNumber)&&
 					(fleet.BotShips[i].length == this.BotShips[i].length)&&

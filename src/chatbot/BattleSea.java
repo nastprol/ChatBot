@@ -11,18 +11,17 @@ import com.fasterxml.jackson.core.util.DefaultPrettyPrinter.Indenter;
 
 public class BattleSea implements IGame {
 
-	private Map<Report> PlayerMap;
+	private PlayerMap PlayerMap;
 	private boolean IsActive;
 	private boolean FindNextShip;
 	private PlayerShip CurrentShip;
 	private int Position;
-	private Map<Integer> BotMap;
+	private BotMap BotMap;
 	private boolean isPlayerTurn;
 	private int playerID;
 	
 
 	
-	private DataBase db;
 
 	private String introductionMessage = "This is game Sea Battle. Your turn is first.\n "
 			+ "You have field 10*10. There are one 4-deck, two 3-deck, three 2-deck \n"
@@ -34,11 +33,6 @@ public class BattleSea implements IGame {
 	}
 
 	public BattleSea() {
-
-		db = new DataBase();
-		db.initDatabase();
-		db.connect();
-
 		PlayerMap = new PlayerMap();
 		IsActive = false;
 		FindNextShip = true;
@@ -48,7 +42,19 @@ public class BattleSea implements IGame {
 		isPlayerTurn = true;
 	}
 
-	public void initPlayerGame(int id) { 
+	public BattleSea(int id) {
+
+		PlayerMap = new PlayerMap();
+		IsActive = false;
+		FindNextShip = true;
+		CurrentShip = new PlayerShip(0, 0);
+		Position = 0;
+		BotMap = new BotMap();
+		isPlayerTurn = true;
+		playerID = id;
+	}
+
+/*	public void initPlayerGame(int id) { 
 
 		if (db.checkId(id))
 		{
@@ -73,9 +79,9 @@ public class BattleSea implements IGame {
 			isPlayerTurn = true;
 		}
 		playerID = id;
-	}
+	}*/
 
-	public BattleSea(Map<Integer> map) {
+	public BattleSea(BotMap map) {
 		PlayerMap = new PlayerMap();
 		IsActive = false;
 		FindNextShip = true;
@@ -125,8 +131,6 @@ public class BattleSea implements IGame {
 			answer += "\n" + point.toString();
 		}
 		IsActive = BotMap.countShipsAlive() != 0;
-		db.setDataItem(playerID, new DataItem(playerID, Position, BotMap , PlayerMap, FindNextShip, IsActive, 
-				CurrentShip, PlayerMap.fleet, BotMap.fleet));
 		return answer;
 	}
 
@@ -160,8 +164,7 @@ public class BattleSea implements IGame {
 		}
 		IsActive = PlayerMap.fleet.Count() != 0;
 
-		db.setDataItem(playerID, new DataItem(playerID, Position, BotMap , PlayerMap, FindNextShip, IsActive, 
-			CurrentShip, PlayerMap.fleet, BotMap.fleet));
+		
 	}
 
 	protected Tuple Shoot() {
@@ -170,8 +173,7 @@ public class BattleSea implements IGame {
 		} else {
 			Position = ChooseShotToBeat(CurrentShip);
 		}
-		db.setDataItem(playerID, new DataItem(playerID, Position, BotMap , PlayerMap, FindNextShip, IsActive, 
-				CurrentShip, PlayerMap.fleet, BotMap.fleet));
+		
 		return PlayerMap.ChangePositionToCoordinates(Position);
 	}
 
@@ -280,5 +282,17 @@ public class BattleSea implements IGame {
 	@Override
 	public boolean isActive() {
 		return this.IsActive;
+	}
+	
+	public boolean EqualBattleSea(BattleSea game)
+	{
+		return this.BotMap.EqualMap(game.BotMap) &&
+		this.PlayerMap.EqualMap(game.PlayerMap) &&
+		this.IsActive== game.IsActive &&
+		this.FindNextShip == game.FindNextShip &&
+		this.Position== game.Position &&
+		this.isPlayerTurn == game.isPlayerTurn &&
+		this.playerID == game.playerID;
+		
 	}
 }

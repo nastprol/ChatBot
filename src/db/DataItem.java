@@ -66,6 +66,7 @@ public class DataItem {
 		BotCountAliveShips = playerFleet.Count();
 	}
 	
+	
 	public DataItem(int id, int pos, int[] map, int[] playerMap, boolean find, boolean active, 
 			int shipLength, int shipOrnt, int shipPos, int fleetCount, int[] fleetPos, int[] fleetOrnt, int[] botFleetPos,
 			int[] botFleetOrnt, int[] scoreAlive, int[] botShipsDeck, int BotCountAliveShips) {
