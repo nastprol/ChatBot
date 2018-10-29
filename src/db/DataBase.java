@@ -14,7 +14,7 @@ public class DataBase implements IDataBase {
 	public void connect() {
 		try {
 			String dbUrl = System.getenv("DB_URL");
-			c = DriverManager.getConnection(dbUrl);
+			c = DriverManager.getConnection(dbUrl, "root", "root");
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.exit(1);

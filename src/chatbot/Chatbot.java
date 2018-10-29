@@ -15,7 +15,7 @@ public class Chatbot {
 
 	Chatbot(IGameFactory gameFactory) {
 		this.gameFactory = gameFactory;
-		game = this.gameFactory.create(db,id); //откуда превый раз взять ID
+		game = this.gameFactory.create(db, -1); //откуда превый раз взять ID
 		parser = this.gameFactory.createParser();
 		db = new DataBase();
 		db.initDatabase();
