@@ -19,9 +19,6 @@ public class BattleSea implements IGame {
 	private BotMap BotMap;
 	private boolean isPlayerTurn;
 	private int playerID;
-	
-
-	
 
 	private String introductionMessage = "This is game Sea Battle. Your turn is first.\n "
 			+ "You have field 10*10. There are one 4-deck, two 3-deck, three 2-deck \n"
@@ -91,14 +88,14 @@ public class BattleSea implements IGame {
 		isPlayerTurn = true;
 	}
 
-	public BattleSea(BotMap map, PlayerMap playerMap, boolean findNextShip, PlayerShip ship, int position) {
+	public BattleSea(BotMap map, PlayerMap playerMap, boolean findNextShip, PlayerShip ship, int position, boolean playerTurn) {
 		PlayerMap = playerMap;
 		IsActive = false;
 		FindNextShip = findNextShip;
 		CurrentShip = ship;
 		Position = position;
 		BotMap = map;
-		isPlayerTurn = true;
+		isPlayerTurn = playerTurn;
 	}
 
 	public boolean isPlayerTurn() {
@@ -135,6 +132,7 @@ public class BattleSea implements IGame {
 	}
 
 	protected void UpdatePlayerMap(Report report) {
+		this.isPlayerTurn = true;
 		if (FindNextShip) {
 			FindNextShip = report != Report.damage;
 			if (report == Report.damage) {
@@ -146,6 +144,7 @@ public class BattleSea implements IGame {
 				PlayerMap.SelectionArea(CurrentShip, null);
 				PlayerMap.fleet.RegisterKill(CurrentShip);
 			} else {
+				this.isPlayerTurn = false;
 				PlayerMap.Set(Position, Report.miss);
 			}
 		} else {
@@ -160,11 +159,10 @@ public class BattleSea implements IGame {
 				PlayerMap.fleet.RegisterKill(CurrentShip);
 			}
 			if (report == Report.miss)
+				this.isPlayerTurn = false;
 				PlayerMap.Set(Position, Report.miss);
 		}
-		IsActive = PlayerMap.fleet.Count() != 0;
-
-		
+		IsActive = PlayerMap.fleet.Count() != 0;		
 	}
 
 	protected Tuple Shoot() {

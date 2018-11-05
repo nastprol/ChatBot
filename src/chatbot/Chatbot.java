@@ -38,6 +38,7 @@ public class Chatbot implements IBot {
 		}
 		case "/exit":{
 			this.game.SetInactive();
+			db.setDataItem(id, game);
 			return new Reply("Game is over", null);
 		}
 		case "":
@@ -51,14 +52,17 @@ public class Chatbot implements IBot {
 		case "/start": {
 
 			game.SetActive();
-			
-			return new Reply(game.GetIntroductionMessage(), null);
+			var answer = new Reply(game.GetIntroductionMessage(), null);
+			db.setDataItem(id, game);
+			return answer;
 		}
 		case "/whoareyou": {
 			return new Reply(game.GetIntroductionMessage(), null);
 		}
 		default: {
-			return parser.ProcessPlayerAnswer(request, id);
+			var answer = parser.ProcessPlayerAnswer(request, id);
+			db.setDataItem(id, game);
+			return answer;
 		}
 		}
 	}

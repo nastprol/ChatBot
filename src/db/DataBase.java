@@ -41,17 +41,18 @@ public class DataBase implements IDataBase {
 				System.exit(1);
 			}
 			String dbUrl = System.getenv("DB_URL");
-			c = DriverManager.getConnection(dbUrl, "root", "root");
+			c = DriverManager.getConnection(dbUrl);
 			if (c.isClosed())
 				tryConnect();
 
 			Statement stmt = c.createStatement();
-			String sql = "CREATE TABLE IF NOT EXISTS db(" + "user_id INT PRIMARY KEY NOT NULL, "
+			String sql = "CREATE TABLE IF NOT EXISTS db (" + "user_id INT PRIMARY KEY NOT NULL, "
 					/*+ "position INT, " + "player_map INT[100], " + "map INT[100], " + "find_next_ship BOOLEAN, "
 					+ "cur_ship_length INT, " + "cur_ship_position INT, " + "cur_ship_orientation INT, "
 					+ "plr_fleet_count INT, " + "plr_fleet_ships_pos INT[10], " + "plr_fleet_ships_ornt INT[10], "
 					+ "count_alive_bot_ships INT, " + "bot_ornt_ships INT[10], " + "bot_pos_ships INT[10], "
-					+ "bot_count_deck_ships INT[10], " + "bot_score_alive_ships INT[10], " + "is_active BOOLEAN*/+ "jsonString String)";
+					+ "bot_count_deck_ships INT[10], " + "bot_score_alive_ships INT[10], " + "is_active BOOLEAN*/
+					+ "jsonString TEXT)";
 			stmt.executeUpdate(sql);
 			stmt.close();
 		} catch (SQLException e) {
@@ -69,7 +70,7 @@ public class DataBase implements IDataBase {
 			ResultSet rs = stmt.executeQuery();
 
 			rs.next();
-			String jsonString = rs.getString("jsonString String");
+			String jsonString = rs.getString("jsonString");
 			/*int id = rs.getInt("user_id");
 			int pos = rs.getInt("position");
 			
@@ -134,10 +135,10 @@ public class DataBase implements IDataBase {
 			String jsonString = json.GetStringJson(object);
 
 			PreparedStatement stmt;
-			stmt = c.prepareStatement(
-					"INSERT INTO db () VALUES(?, ?, TRUE)");
+			stmt = c.prepareStatement("INSERT INTO db(user_id, jsonString) VALUES(?, ?)");
 			
-			stmt.setString(1,jsonString);
+			stmt.setInt(1, userId);
+			stmt.setString(2, jsonString);
 			/*stmt.setInt(1, userData.UserID);
 			stmt.setInt(2,userData.Position);
 			stmt.setArray(3, c.createArrayOf("int",  this.changeIntToInteger(userData.PlayerMap)));

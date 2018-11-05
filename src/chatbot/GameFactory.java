@@ -10,7 +10,8 @@ public class GameFactory implements IGameFactory {
     public IGame create(IDataBase db, int id) {
     	
     	var check = db.checkId(id);
-        game = check?(BattleSea) db.getData(id): new BattleSea(id);
+
+        game = check ? (BattleSea) db.getData(id): new BattleSea(id);
         return game;
     }
 
