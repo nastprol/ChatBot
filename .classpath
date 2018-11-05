@@ -9,5 +9,6 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/5"/>
 	<classpathentry kind="lib" path="C:/Users/Настя/Downloads/telegrambots-4.1-jar-with-dependencies.jar"/>
 	<classpathentry kind="lib" path="C:/Users/Настя/Documents/gson-1.4.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Настя/Documents/sqlite-jdbc-3.7.2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

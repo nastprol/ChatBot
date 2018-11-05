@@ -9,19 +9,24 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardRem
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
+import db.DataBase;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class TelegramCommunicator extends TelegramLongPollingBot {
-    private static Chatbot chatbot = new Chatbot(new GameFactory());
-    private static String BOT_USERNAME;
-    private static String BOT_TOKEN;
+    private static IBot chatbot;
+    private static Config config;
 
     TelegramCommunicator(DefaultBotOptions botOptions) {
+    	
         super(botOptions);
+        var db = new DataBase();
+		db.initDatabase();
+		db.connect();
+		this.chatbot = new Chatbot(new GameFactory(), db);
         try {
-            BOT_USERNAME = System.getenv("BOT_USERNAME");
-            BOT_TOKEN = System.getenv("BOT_TOKEN");
+            config = new Config();
         }
         catch (NumberFormatException e) {
             System.out.println("Set correct data");
@@ -31,18 +36,18 @@ public class TelegramCommunicator extends TelegramLongPollingBot {
     
     @Override
     public String getBotUsername() {
-        return BOT_USERNAME;
+        return config.getBotUsername();
     }
 
     @Override
     public String getBotToken() {
-        return BOT_TOKEN;
+        return config.getBotToken();
     }
 
     @Override
     public void onUpdateReceived(Update update) {
         try {
-            Reply reply = chatbot.ProcessRequest(update.getMessage().getText(), update.getMessage().getFrom().getId());
+            Reply reply = chatbot.ProcessRequest(update.getMessage().getText(), update.getMessage().getFrom().getId().intValue());
 
             SendMessage sendMessage = new SendMessage(update.getMessage().getChatId(), 
             		reply.botAnswer);

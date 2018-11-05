@@ -6,6 +6,7 @@ import java.util.Objects;
 
 import chatbot.BattleSea;
 import chatbot.BotMap;
+import javassist.NotFoundException;
 
 public class DataBase implements IDataBase {
 
@@ -33,11 +34,19 @@ public class DataBase implements IDataBase {
 
 	public void initDatabase() {
 		try {
+			try {
+				Class.forName("org.sqlite.JDBC");
+			} catch(ClassNotFoundException ex) {
+				ex.printStackTrace();
+				System.exit(1);
+			}
+			String dbUrl = System.getenv("DB_URL");
+			c = DriverManager.getConnection(dbUrl, "root", "root");
 			if (c.isClosed())
 				tryConnect();
 
 			Statement stmt = c.createStatement();
-			String sql = "CREATE TABLE IF NOT EXISTS seabattle(" + "user_id INT PRIMARY KEY NOT NULL, "
+			String sql = "CREATE TABLE IF NOT EXISTS db(" + "user_id INT PRIMARY KEY NOT NULL, "
 					/*+ "position INT, " + "player_map INT[100], " + "map INT[100], " + "find_next_ship BOOLEAN, "
 					+ "cur_ship_length INT, " + "cur_ship_position INT, " + "cur_ship_orientation INT, "
 					+ "plr_fleet_count INT, " + "plr_fleet_ships_pos INT[10], " + "plr_fleet_ships_ornt INT[10], "
@@ -55,7 +64,7 @@ public class DataBase implements IDataBase {
 		try {
 			if (c.isClosed())
 				tryConnect();
-			PreparedStatement stmt = c.prepareStatement("SELECT * FROM seabattle WHERE user_id = ?;");
+			PreparedStatement stmt = c.prepareStatement("SELECT * FROM db WHERE user_id = ?;");
 			stmt.setInt(1, userId);
 			ResultSet rs = stmt.executeQuery();
 
@@ -63,6 +72,7 @@ public class DataBase implements IDataBase {
 			String jsonString = rs.getString("jsonString String");
 			/*int id = rs.getInt("user_id");
 			int pos = rs.getInt("position");
+			
 
 			int[] playerMap = (int[]) rs.getArray("player_map").getArray();
 			int[] map = (int[]) rs.getArray("map").getArray();
@@ -95,7 +105,7 @@ public class DataBase implements IDataBase {
 	}
 
 	private void removeUserData(int userId) {
-		runSql(userId, "DELETE FROM seabattle WHERE user_id = ?");
+		runSql(userId, "DELETE FROM db WHERE user_id = ?");
 	}
 
 	private void runSql(int userId, String command) {
@@ -125,7 +135,7 @@ public class DataBase implements IDataBase {
 
 			PreparedStatement stmt;
 			stmt = c.prepareStatement(
-					"INSERT INTO seabattle () VALUES(?, ?, TRUE)");
+					"INSERT INTO db () VALUES(?, ?, TRUE)");
 			
 			stmt.setString(1,jsonString);
 			/*stmt.setInt(1, userData.UserID);
@@ -167,7 +177,7 @@ public class DataBase implements IDataBase {
 	public boolean checkId(int idUser)
 	{
 		boolean isUserExists = false;
-        try (PreparedStatement ps = c.prepareStatement("select 1 from seabattle where user_id = ?")) {
+        try (PreparedStatement ps = c.prepareStatement("select 1 from db where user_id = ?")) {
             ps.setInt(1, idUser);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {

@@ -6,20 +6,16 @@ import java.util.Arrays;
 import db.DataBase;
 import db.IDataBase;
 
-public class Chatbot {
+public class Chatbot implements IBot {
 
 	private IGame game;
 	private IGameFactory gameFactory;
 	private IParser parser;
 	private IDataBase db;
 
-	Chatbot(IGameFactory gameFactory) {
+	Chatbot(IGameFactory gameFactory, DataBase db) {
 		this.gameFactory = gameFactory;
-		game = this.gameFactory.create(db, -1); //откуда превый раз взять ID
-		parser = this.gameFactory.createParser();
-		db = new DataBase();
-		db.initDatabase();
-		db.connect();
+		this.db = db;
 	}
 	
 	protected IGame getGame() {
@@ -29,6 +25,11 @@ public class Chatbot {
 	public Reply ProcessRequest(String userRequest, int id) {
 
 		String request = userRequest.toLowerCase();
+		game = this.gameFactory.create(db, id);
+		parser = this.gameFactory.createParser();
+		game.SetActive();
+		
+		
 		switch (request) {
 		case "/help":{
 			return new Reply("/exit if you wanna leave this game\n"
@@ -48,10 +49,7 @@ public class Chatbot {
 			return new Reply("", null);
 		}
 		case "/start": {
-			if (game.isActive()) {
-				game = this.gameFactory.create(db, id);
-				parser = this.gameFactory.createParser();
-			}
+
 			game.SetActive();
 			
 			return new Reply(game.GetIntroductionMessage(), null);

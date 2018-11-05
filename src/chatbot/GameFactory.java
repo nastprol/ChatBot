@@ -9,9 +9,6 @@ public class GameFactory implements IGameFactory {
     @Override
     public IGame create(IDataBase db, int id) {
     	
-    	if(id == -1)
-    		return new BattleSea(id);
-    	
     	var check = db.checkId(id);
         game = check?(BattleSea) db.getData(id): new BattleSea(id);
         return game;
