@@ -6,5 +6,5 @@ public interface IDataBase {
 	public Object getData(int userId);
 	public void setDataItem(int userId,Object object);
 	public boolean checkId(int idUser);
-
+	public void removeUserData(int userId);
 }

@@ -16,22 +16,14 @@ import java.util.List;
 
 public class TelegramCommunicator extends TelegramLongPollingBot {
     private static IBot chatbot;
-    private static Config config;
+    private static IBotConfig config;
 
-    TelegramCommunicator(DefaultBotOptions botOptions) {
+    TelegramCommunicator(DefaultBotOptions botOptions, IBot chatbot, IBotConfig cf) {
     	
         super(botOptions);
-        var db = new DataBase();
-		db.initDatabase();
-		db.connect();
-		this.chatbot = new Chatbot(new GameFactory(), db);
-        try {
-            config = new Config();
-        }
-        catch (NumberFormatException e) {
-            System.out.println("Set correct data");
-            System.exit(0);
-        }
+  
+		this.chatbot = chatbot;
+        this.config = cf;
     }
     
     @Override

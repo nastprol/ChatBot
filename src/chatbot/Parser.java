@@ -49,8 +49,10 @@ public class Parser implements IParser {
 				return new Reply("It's not your turn to shoot", null);
 			try {
 				String[] coord = command.split(" ");
+				
 				int y = Integer.parseInt(coord[1]) - 1;
 				int x = (int) coord[0].charAt(0) - 96;
+				
 				game.setPlayerTurn();
 				if (coordinatesInFormat(x, y))
 				{
@@ -64,9 +66,9 @@ public class Parser implements IParser {
 					return new Reply(check, null);
 				}
 			} catch (Exception e) {
-				return new Reply("Send me coordinates in format <A-I> <1-10>", null);
+				return new Reply("Send me coordinates in format <A-J> <1-10>", null);
 			}
-			return new Reply("Send me coordinates in format <A-I> <1-10>", null);
+			return new Reply("Send me coordinates in format <A-J> <1-10>", null);
 		}
 		}
 	}

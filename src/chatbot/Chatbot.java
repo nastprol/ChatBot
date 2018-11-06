@@ -13,7 +13,7 @@ public class Chatbot implements IBot {
 	private IParser parser;
 	private IDataBase db;
 
-	Chatbot(IGameFactory gameFactory, DataBase db) {
+	Chatbot(IGameFactory gameFactory, IDataBase db) {
 		this.gameFactory = gameFactory;
 		this.db = db;
 	}
@@ -25,10 +25,6 @@ public class Chatbot implements IBot {
 	public Reply ProcessRequest(String userRequest, int id) {
 
 		String request = userRequest.toLowerCase();
-		game = this.gameFactory.create(db, id);
-		parser = this.gameFactory.createParser();
-		game.SetActive();
-		
 		
 		switch (request) {
 		case "/help":{
@@ -37,8 +33,12 @@ public class Chatbot implements IBot {
 					+ "/whoareyou if you wanna get know game's rules", null);
 		}
 		case "/exit":{
+			game = this.gameFactory.create(db, id);
+			parser = this.gameFactory.createParser();
+			
 			this.game.SetInactive();
-			db.setDataItem(id, game);
+			db.removeUserData(id);
+
 			return new Reply("Game is over", null);
 		}
 		case "":
@@ -51,7 +51,12 @@ public class Chatbot implements IBot {
 		}
 		case "/start": {
 
+			db.removeUserData(id);
+			
+			game = this.gameFactory.create(db, id);
+			parser = this.gameFactory.createParser();
 			game.SetActive();
+			
 			var answer = new Reply(game.GetIntroductionMessage(), null);
 			db.setDataItem(id, game);
 			return answer;
@@ -60,6 +65,9 @@ public class Chatbot implements IBot {
 			return new Reply(game.GetIntroductionMessage(), null);
 		}
 		default: {
+			game = this.gameFactory.create(db, id);
+			parser = this.gameFactory.createParser();
+			
 			var answer = parser.ProcessPlayerAnswer(request, id);
 			db.setDataItem(id, game);
 			return answer;
