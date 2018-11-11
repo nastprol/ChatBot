@@ -51,32 +51,6 @@ public class BattleSea implements IGame {
 		playerID = id;
 	}
 
-/*	public void initPlayerGame(int id) { 
-
-		if (db.checkId(id))
-		{
-			DataItem dataItem = db.getData(id);
-			PlayerMap = new PlayerMap(dataItem.PlayerMap,dataItem.PlayerFleetCount, 
-					dataItem.PlayerFleetShipsPosition,dataItem.PlayerFleetShipsOrientation);
-			IsActive = dataItem.IsActive;
-			FindNextShip = dataItem.FindNextShip;
-			CurrentShip = new PlayerShip(dataItem.CurrShipPosition,Orientation.values()[dataItem.CurrShipOrientation],dataItem.CurrShipLength);
-			Position = dataItem.Position;
-			BotMap = new BotMap(dataItem.Map, dataItem.BotCountAliveShips, dataItem.BotPositionShips, dataItem.BotOrientationShips,
-					dataItem.BotCountDeckShips, dataItem.BotScoreAliveShips);
-		}
-		else
-		{
-			PlayerMap = new PlayerMap();
-			IsActive = false;
-			FindNextShip = true;
-			CurrentShip = new PlayerShip(0, 0);
-			Position = 0;
-			BotMap = new BotMap();
-			isPlayerTurn = true;
-		}
-		playerID = id;
-	}*/
 
 	public BattleSea(BotMap map) {
 		PlayerMap = new PlayerMap();
@@ -292,5 +266,9 @@ public class BattleSea implements IGame {
 		this.isPlayerTurn == game.isPlayerTurn &&
 		this.playerID == game.playerID;
 		
+	}
+	
+	public boolean EqualBattleSeaBotMap(BattleSea game) {
+		return this.BotMap.EqualMap(game.BotMap);
 	}
 }
