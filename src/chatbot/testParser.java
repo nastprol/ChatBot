@@ -41,9 +41,16 @@ public class testParser {
 		game.setNotPlayerTurn();
 		reply = parser.ProcessPlayerAnswer("miss", id);
 		assertEquals(reply.botAnswer, "Your turn to shoot");
+		game.setNotPlayerTurn();
+		reply = parser.ProcessPlayerAnswer("damage", id);
+		String[] anwser = reply.botAnswer.split(" ");
+		//System.out.println(anwser[0]);
+		assertEquals(Character.isDigit(anwser[1].charAt(0)), true);
+		assertEquals(Character.isLetter(anwser[0].charAt(0)), true);
 		game.setPlayerTurn();
 		reply = parser.ProcessPlayerAnswer("a 4", id);
-		assertEquals(reply.botAnswer == "miss" || reply.botAnswer == "kill" || reply.botAnswer == "damage", true);
+		String report = reply.botAnswer.substring(0, 4);
+		assertEquals(report.equals("miss")  || report.equals("kill")  || report.equals("dama"), true);
 		
 	}
 

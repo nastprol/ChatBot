@@ -49,7 +49,6 @@ class testGameSituations {
 				}
 			}
 		}
-		System.out.println(reply.botAnswer);
 		assertEquals(reply.botAnswer.substring(0, 4), "miss");
 	}
 
