@@ -79,9 +79,7 @@ public class PlayerMap extends Map<Report> {
 
 	protected boolean EqualMap(PlayerMap playerMap) {
 		boolean result = true;
-		/*if(!(map instanceof PlayerMap)) return false;
-		PlayerMap playerMap = (PlayerMap) map;
-		*/
+		
 		for(int i = 0; i < this.map.length; i++)
 			result = result && playerMap.map[i] == this.map[i];
 		return result;

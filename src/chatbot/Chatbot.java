@@ -1,5 +1,9 @@
 package chatbot;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
+import db.DataBase;
 import db.IDataBase;
 
 public class Chatbot implements IBot {
@@ -26,7 +30,7 @@ public class Chatbot implements IBot {
 		case "/help":{
 			return new Reply("/exit if you wanna leave this game\n"
 					+ "/start if you wanna start or restart game\n"
-					+ "/whoareyou if you wanna know game's rules", null);
+					+ "/whoareyou if you wanna get know game's rules", null);
 		}
 		case "/exit":{
 			game = this.gameFactory.create(db, id);
@@ -53,7 +57,7 @@ public class Chatbot implements IBot {
 			parser = this.gameFactory.createParser();
 			game.SetActive();
 			
-			var answer = new Reply(game.GetIntroductionMessage(), null);
+			Reply answer = new Reply(game.GetIntroductionMessage(), null);
 			db.setDataItem(id, game);
 			return answer;
 		}
@@ -64,7 +68,7 @@ public class Chatbot implements IBot {
 			game = this.gameFactory.create(db, id);
 			parser = this.gameFactory.createParser();
 			
-			var answer = parser.ProcessPlayerAnswer(request, id);
+			Reply answer = parser.ProcessPlayerAnswer(request, id);
 			db.setDataItem(id, game);
 			return answer;
 		}

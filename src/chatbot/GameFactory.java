@@ -9,7 +9,7 @@ public class GameFactory implements IGameFactory {
     @Override
     public IGame create(IDataBase db, int id) {
     	
-    	var check = db.checkId(id);
+    	boolean check = db.checkId(id);
 
         game = check ? (BattleSea) db.getData(id): new BattleSea(id);
         return game;
@@ -17,6 +17,6 @@ public class GameFactory implements IGameFactory {
 
 	@Override
 	public IParser createParser() {
-		return new BattleSeaParser(game);
+		return new Parser(game);
 	}
 }

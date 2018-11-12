@@ -11,6 +11,7 @@ class testThreadSafety {
 
 	@Test
 	void test() {
+		
 		IDataBase db = new DataBase();
 		db.initDatabase();
 		db.connect();
@@ -22,7 +23,7 @@ class testThreadSafety {
 		bot.ProcessRequest("/start", id1);
 		bot.ProcessRequest("/start", id2);
 		BattleSea game = (BattleSea)db.getData(id1);
-		var parser = new BattleSeaParser(game);
+		Parser parser = new Parser(game);
 		for(int i = 1; i < 11; i++) {
 			String message = new StringBuilder().append(letter1).append(' ').append((char)i).toString();
 			parser.ProcessPlayerAnswer(message, id1);
@@ -33,7 +34,7 @@ class testThreadSafety {
 		thread1.start();
 		thread2.start();
 		BattleSea game1 = (BattleSea)db.getData(id1);
-		assertEquals(game1.equalBattleSea(game), true);
+		assertEquals(game1.EqualBattleSea(game), true);
 	}
 
 }

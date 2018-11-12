@@ -1,7 +1,13 @@
 package chatbot;
 
 import java.util.ArrayList;
+import db.DataBase;
+import db.DataItem;
+
+import java.util.Arrays;
 import java.util.Random;
+
+import com.fasterxml.jackson.core.util.DefaultPrettyPrinter.Indenter;
 
 public class BattleSea implements IGame {
 
@@ -44,15 +50,17 @@ public class BattleSea implements IGame {
 		isPlayerTurn = true;
 		playerID = id;
 	}
+	
 
-	public BattleSea(BotMap map) {
+
+	public BattleSea(BotMap map, boolean isTurn) {
 		PlayerMap = new PlayerMap();
 		IsActive = false;
 		FindNextShip = true;
 		CurrentShip = new PlayerShip(0, 0);
 		Position = 0;
 		BotMap = map;
-		isPlayerTurn = true;
+		isPlayerTurn = isTurn;
 	}
 
 	public BattleSea(BotMap map, PlayerMap playerMap, boolean findNextShip, PlayerShip ship, int position, boolean playerTurn) {
@@ -65,15 +73,15 @@ public class BattleSea implements IGame {
 		isPlayerTurn = playerTurn;
 	}
 
-	protected boolean isPlayerTurn() {
+	public boolean isPlayerTurn() {
 		return isPlayerTurn;
 	}
 
-	protected void setPlayerTurn() {
+	public void setPlayerTurn() {
 		isPlayerTurn = true;
 	}
 
-	protected void setNotPlayerTurn() {
+	public void setNotPlayerTurn() {
 		isPlayerTurn = false;
 	}
 
@@ -249,7 +257,7 @@ public class BattleSea implements IGame {
 		return this.IsActive;
 	}
 	
-	public boolean equalBattleSea(BattleSea game)
+	public boolean EqualBattleSea(BattleSea game)
 	{
 		return this.BotMap.EqualMap(game.BotMap) &&
 		this.PlayerMap.EqualMap(game.PlayerMap) &&

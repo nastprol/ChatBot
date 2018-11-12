@@ -27,3 +27,12 @@
 /TelegramBot.class
 /Reply.class
 /TelegramCommunicator.class
+/BotConfig.class
+/IBot.class
+/IBotConfig.class
+/IProxyConfig.class
+/ProxyConfig.class
+/SentMessageTest.class
+/testThreadSafety.class
+/testGameSituations.class
+/testParser.class

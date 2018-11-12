@@ -10,7 +10,7 @@ class testChatBot {
 
 	@Test
 	void testExitGame(){
-		var db = new DataBase();
+		DataBase db = new DataBase();
 		db.initDatabase();
 		db.connect();
 		
@@ -23,7 +23,7 @@ class testChatBot {
 	
 	@Test
 	void testStartGame(){
-		var db = new DataBase();
+		DataBase db = new DataBase();
 		db.initDatabase();
 		db.connect();
 		
@@ -39,7 +39,7 @@ class testChatBot {
 	
 	@Test
 	void testRestartGame(){
-		var db = new DataBase();
+		DataBase db = new DataBase();
 		db.initDatabase();
 		db.connect();
 		
