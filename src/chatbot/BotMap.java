@@ -149,9 +149,6 @@ public class BotMap extends Map<Integer> {
 	
 	public boolean EqualMap(BotMap botMap) {
 		boolean result = true;
-		/*if(!(map instanceof BotMap)) return false;
-		BotMap botMap = () map;
-		*/
 		for(int i = 0; i < this.map.length; i++)
 			result = result && botMap.map[i] == this.map[i];
 		return result;

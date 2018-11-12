@@ -3,12 +3,12 @@ package chatbot;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class Parser implements IParser {
+public class BattleSeaParser implements IParser {
 	
+	private static final ArrayList<String> ANSWERS = new ArrayList<String>(Arrays.asList("miss", "kill", "damage"));
 	private BattleSea game;
-	private final ArrayList answers = new ArrayList(Arrays.asList("miss", "kill", "damage"));
 	
-	public Parser(BattleSea game) {
+	public BattleSeaParser(BattleSea game) {
 		this.game = game;
 	}
 	
@@ -17,7 +17,6 @@ public class Parser implements IParser {
 	} 
 	
 	public Reply ProcessPlayerAnswer(String command, int id) {
-	//	game.initPlayerGame(id);
 		if (!game.isActive())
 			return new Reply("Game wasn't started", null);
 		switch (command) {
@@ -27,7 +26,7 @@ public class Parser implements IParser {
 			game.UpdatePlayerMap(Report.damage);
 			Tuple point = game.Shoot();
 			game.setNotPlayerTurn();
-			return new Reply(point.toString(), answers);
+			return new Reply(point.toString(), ANSWERS);
 		}
 		case "kill": {
 			if (game.isPlayerTurn())
@@ -35,7 +34,7 @@ public class Parser implements IParser {
 			game.UpdatePlayerMap(Report.kill);
 			Tuple point = game.Shoot();
 			game.setNotPlayerTurn();
-			return new Reply(point.toString(), answers);
+			return new Reply(point.toString(), ANSWERS);
 		}
 		case "miss": {
 			if (game.isPlayerTurn())
@@ -51,7 +50,7 @@ public class Parser implements IParser {
 				String[] coord = command.split(" ");
 				
 				int y = Integer.parseInt(coord[1]) - 1;
-				int x = (int) coord[0].charAt(0) - 96;
+				int x = (int) coord[0].charAt(0) - 97;
 				
 				game.setPlayerTurn();
 				if (coordinatesInFormat(x, y))
@@ -61,7 +60,7 @@ public class Parser implements IParser {
 					if (a.equals("miss"))
 					{
 						game.setNotPlayerTurn();
-						return new Reply(check, answers);
+						return new Reply(check, ANSWERS);
 					}
 					return new Reply(check, null);
 				}

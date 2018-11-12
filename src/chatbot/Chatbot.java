@@ -1,9 +1,5 @@
 package chatbot;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
-import db.DataBase;
 import db.IDataBase;
 
 public class Chatbot implements IBot {
@@ -30,7 +26,7 @@ public class Chatbot implements IBot {
 		case "/help":{
 			return new Reply("/exit if you wanna leave this game\n"
 					+ "/start if you wanna start or restart game\n"
-					+ "/whoareyou if you wanna get know game's rules", null);
+					+ "/whoareyou if you wanna know game's rules", null);
 		}
 		case "/exit":{
 			game = this.gameFactory.create(db, id);
