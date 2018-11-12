@@ -36,7 +36,7 @@ public class SentMessageTest extends Thread {
 				return;
 			
 			try{
-				sleep(1000);
+				sleep(60);
 			}
 			catch(InterruptedException e){};
 		}

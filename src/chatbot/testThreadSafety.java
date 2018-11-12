@@ -33,6 +33,7 @@ class testThreadSafety {
 		SentMessageTest thread2 = new SentMessageTest(bot, letter2, id2);
 		thread1.start();
 		thread2.start();
+		while(thread1.isAlive() || thread2.isAlive());
 		BattleSea game1 = (BattleSea)db.getData(id1);
 		assertEquals(game1.EqualBattleSea(game), true);
 	}

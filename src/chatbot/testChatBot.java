@@ -35,23 +35,4 @@ class testChatBot {
 		Reply answer = bot.ProcessRequest("/start",4);
 		assertEquals(game.isActive(), true);
 	}
-	
-	
-	@Test
-	void testRestartGame(){
-		DataBase db = new DataBase();
-		db.initDatabase();
-		db.connect();
-		
-		GameFactory gameFactory = new GameFactory();
-		Chatbot bot = new Chatbot(gameFactory, db);
-
-		IGame game = bot.getGame();
-		Reply answer = bot.ProcessRequest("/start",3);
-		assertEquals(game.isActive(), true);
-		answer = bot.ProcessRequest("/exit",3);
-		assertEquals(game.isActive(), false);
-		answer = bot.ProcessRequest("/restart",3);
-		assertEquals(bot.getGame().isActive(), true);
-	}
 }
