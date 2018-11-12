@@ -15,22 +15,25 @@ class testThreadSafety {
 		db.initDatabase();
 		db.connect();
 		Chatbot bot = new Chatbot(new GameFactory(), db);
-		BotMap map = new BotMap();
-		for(int i = 0; i < 10; i++)
-			map.ChangeState(0, i);
-		BattleSea game = new BattleSea(map);
 		int id1 = 1234567899;
 		int id2 = 1234567890;
 		char letter1 = 'A';
 		char letter2 = 'B';
 		bot.ProcessRequest("/start", id1);
 		bot.ProcessRequest("/start", id2);
+		BattleSea game = (BattleSea)db.getData(id1);
+		Parser parser = new Parser(game);
+		for(int i = 1; i < 11; i++) {
+			String message = new StringBuilder().append(letter1).append(' ').append((char)i).toString();
+			parser.ProcessPlayerAnswer(message, id1);
+			parser.ProcessPlayerAnswer("miss", id1);
+		}
 		SentMessageTest thread1 = new SentMessageTest(bot, letter1, id1);
 		SentMessageTest thread2 = new SentMessageTest(bot, letter2, id2);
 		thread1.start();
 		thread2.start();
 		BattleSea game1 = (BattleSea)db.getData(id1);
-		assertEquals(game1.EqualBattleSeaBotMap(game), true);
+		assertEquals(game1.EqualBattleSea(game), true);
 	}
 
 }

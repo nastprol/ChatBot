@@ -267,8 +267,4 @@ public class BattleSea implements IGame {
 		this.playerID == game.playerID;
 		
 	}
-	
-	public boolean EqualBattleSeaBotMap(BattleSea game) {
-		return this.BotMap.EqualMap(game.BotMap);
-	}
 }
