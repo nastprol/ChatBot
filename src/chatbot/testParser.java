@@ -13,7 +13,7 @@ public class testParser {
 	{
 		BattleSea game = new BattleSea();
 		Reply reply = null;
-		Parser parser = new  Parser(game);
+		BattleSeaParser parser = new  BattleSeaParser(game);
 		int id = 1;
 		game.SetActive();
 		game.setPlayerTurn();
@@ -35,7 +35,7 @@ public class testParser {
 	{
 		BattleSea game = new BattleSea();
 		Reply reply = null;
-		Parser parser = new  Parser(game);
+		BattleSeaParser parser = new  BattleSeaParser(game);
 		int id = 1;
 		game.SetActive();
 		game.setNotPlayerTurn();
@@ -44,7 +44,6 @@ public class testParser {
 		game.setNotPlayerTurn();
 		reply = parser.ProcessPlayerAnswer("damage", id);
 		String[] anwser = reply.botAnswer.split(" ");
-		//System.out.println(anwser[0]);
 		assertEquals(Character.isDigit(anwser[1].charAt(0)), true);
 		assertEquals(Character.isLetter(anwser[0].charAt(0)), true);
 		game.setPlayerTurn();

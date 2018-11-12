@@ -9,12 +9,12 @@ class testJson {
 
 	@Test
 	void test() {
-		BotMap fleet = new BotMap();
+		BotMap botMap = new BotMap();
 		Json json = new Json<BotMap>(BotMap.class);
-		String jsonString = json.GetStringJson(fleet);
-		BotMap fleetExpected = (BotMap)json.GetObject(jsonString);
-		assertEquals(true, fleet.EqualMap(fleetExpected));
-		assertEquals(true, fleet.getFleet().EqualFleet(fleetExpected.getFleet()));
+		String jsonString = json.GetStringJson(botMap);
+		BotMap botMarExpected = (BotMap)json.GetObject(jsonString);
+		assertEquals(true, botMap.EqualMap(botMarExpected));
+		assertEquals(true, botMap.getFleet().EqualFleet(botMarExpected.getFleet()));
 	}
 	
 	@Test
@@ -22,10 +22,8 @@ class testJson {
 		BattleSea bs = new BattleSea();
 		Json json = new Json<BattleSea>(BattleSea.class);
 		String jsonString = json.GetStringJson(bs);
-		BattleSea fleetExpected = (BattleSea)json.GetObject(jsonString);
-		assertEquals(true, bs.EqualBattleSea(fleetExpected));
-		//assertEquals(true, bs.BotMap.getFleet().EqualFleet(fleetExpected.BotMap.getFleet()));
-	
+		BattleSea bsExpected = (BattleSea)json.GetObject(jsonString);
+		assertEquals(true, bs.EqualBattleSea(bsExpected));
 	}
 
 }

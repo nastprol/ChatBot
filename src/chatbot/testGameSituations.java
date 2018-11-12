@@ -17,7 +17,7 @@ class testGameSituations {
 		BotMap map = new BotMap();
 		BattleSea game = new BattleSea(map, true);
 		Reply reply = null;
-		Parser parser = new  Parser(game);
+		BattleSeaParser parser = new  BattleSeaParser(game);
 		int id = 1;
 		game.SetActive();
 		for (int i = 0; i < 10; i++) {
@@ -37,7 +37,7 @@ class testGameSituations {
 		BotMap map = new BotMap();
 		BattleSea game = new BattleSea(map, true);
 		Reply reply = null;
-		Parser parser = new  Parser(game);
+		BattleSeaParser parser = new  BattleSeaParser(game);
 		int id = 1;
 		game.SetActive();
 		for (int i = 0; i < 10; i++) {
@@ -58,7 +58,7 @@ class testGameSituations {
 		BotMap map = new BotMap();
 		BattleSea game = new BattleSea(map, true);
 		Reply reply = null;
-		Parser parser = new  Parser(game);
+		BattleSeaParser parser = new  BattleSeaParser(game);
 		int id = 1;
 		game.SetActive();
 		int count = 0;
@@ -82,7 +82,7 @@ class testGameSituations {
 
 		BotMap map = new BotMap();
 		BattleSea game = new BattleSea(map, false);
-		Parser parser = new  Parser(game);
+		BattleSeaParser parser = new  BattleSeaParser(game);
 		int id = 1;
 		game.SetActive();
 

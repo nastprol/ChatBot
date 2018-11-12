@@ -3,12 +3,12 @@ package chatbot;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class Parser implements IParser {
+public class BattleSeaParser implements IParser {
 	
 	private BattleSea game;
 	private final ArrayList answers = new ArrayList(Arrays.asList("miss", "kill", "damage"));
 	
-	public Parser(BattleSea game) {
+	public BattleSeaParser(BattleSea game) {
 		this.game = game;
 	}
 	
@@ -16,9 +16,7 @@ public class Parser implements IParser {
 		return x < 10 && x > -1 && y < 10 && y > -1;
 	} 
 	
-	public Reply ProcessPlayerAnswer(String command, int id) {
-	//	game.initPlayerGame(id);
-		
+	public Reply ProcessPlayerAnswer(String command, int id) {	
 		if (!game.isActive())
 			return new Reply("Game wasn't started", null);
 		switch (command) {

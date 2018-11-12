@@ -17,6 +17,6 @@ public class GameFactory implements IGameFactory {
 
 	@Override
 	public IParser createParser() {
-		return new Parser(game);
+		return new BattleSeaParser(game);
 	}
 }

@@ -266,6 +266,13 @@ public class BattleSea implements IGame {
 		this.Position== game.Position &&
 		this.isPlayerTurn == game.isPlayerTurn &&
 		this.playerID == game.playerID;
-		
+	}
+	
+	public boolean EqualBattleSeaNotFull(BattleSea game)
+	{
+		return this.BotMap.EqualMap(game.BotMap) &&
+		this.IsActive== game.IsActive &&
+		this.isPlayerTurn == game.isPlayerTurn &&
+		this.playerID == game.playerID;	
 	}
 }
