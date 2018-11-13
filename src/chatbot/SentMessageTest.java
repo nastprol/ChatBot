@@ -10,36 +10,29 @@ public class SentMessageTest extends Thread {
 	
 	public void finish()
 	{
-		mFinish = true;
+		mFinish = true; 
 	}
 	
-	SentMessageTest(IBot Bot, char Letter, int Id){
+	SentMessageTest(IBot Bot, char Letter, int Id, int count){
 		this.Bot = Bot;
 		this.Letter = Letter;
 		this.Id = Id;
-		this.count = 0;
+		this.count = count;
 	}
 	
 	@Override
 	public void run()
-	{	do {
-			if(!mFinish) {
-				this.count++;
-				String message = new StringBuilder().append(Letter).append(' ').append((char)this.count).toString();
-				Bot.ProcessRequest(message, this.Id);
-				Bot.ProcessRequest("miss", this.Id);
-				if (this.count == 10) {
+	{
+				StringBuilder message = new StringBuilder();
+				if (this.count < 10)
+					message.append(Letter).append(' ').append((char)this.count);
+				else
+					message.append(Letter).append(' ').append("10");
+				Bot.ProcessRequest(message.toString(), this.Id);
+				if (true) {
 					this.mFinish = true;
 				}
-			}
-			else
+				System.out.println(this.Id);
 				return;
-			
-			try{
-				sleep(60);
-			}
-			catch(InterruptedException e){};
-		}
-		while(true);
 	}
 }

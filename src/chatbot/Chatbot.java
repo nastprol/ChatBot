@@ -1,9 +1,5 @@
 package chatbot;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
-import db.DataBase;
 import db.IDataBase;
 
 public class Chatbot implements IBot {

@@ -24,15 +24,14 @@ class testChatBot {
 	@Test
 	void testStartGame(){
 		DataBase db = new DataBase();
-		db.initDatabase();
+		db.initDatabase(); 
 		db.connect();
 		
 		GameFactory gameFactory = new GameFactory();
 		Chatbot bot = new Chatbot(gameFactory, db);
 
-		IGame game = bot.getGame();
-		assertEquals(game.isActive(), false);
 		Reply answer = bot.ProcessRequest("/start",4);
+		IGame game = bot.getGame();  
 		assertEquals(game.isActive(), true);
 	}
 }

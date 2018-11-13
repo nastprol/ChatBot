@@ -29,7 +29,7 @@ public class DataBase implements IDataBase {
 		} catch (SQLException e) {
 			e.printStackTrace();
 			System.exit(1);
-		}
+		} 
 	}
 
 	public void initDatabase() {
@@ -68,7 +68,7 @@ public class DataBase implements IDataBase {
 
 			rs.close();
 			stmt.close();
-			Json json = new Json<BattleSea>( BattleSea.class);
+			Json<BattleSea> json = new Json<BattleSea>( BattleSea.class);
 			return json.GetObject(jsonString);
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -124,6 +124,7 @@ public class DataBase implements IDataBase {
 		 return objectArray;
 	}
 	
+	@SuppressWarnings("finally")
 	public boolean checkId(int idUser)
 	{
 		boolean isUserExists = false;

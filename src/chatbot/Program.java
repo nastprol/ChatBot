@@ -2,7 +2,6 @@ package chatbot;
 
 import java.net.Authenticator;
 import java.net.PasswordAuthentication;
-import java.sql.SQLException;
 
 /*import java.util.Scanner;
 
@@ -34,7 +33,7 @@ public class Program {
 
 	public static void main(String[] args) {
 		
-		pc = new ProxyConfig();
+		pc = new ProxyConfig(); 
 		
         ApiContextInitializer.init();
         TelegramBotsApi botsApi = new TelegramBotsApi();
