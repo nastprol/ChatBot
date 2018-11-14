@@ -8,7 +8,7 @@ class testGameSituations {
 
 	private String CoordinatesToString(int x, int y) {
 		String sY = String.valueOf(y + 1);
-		String sX = String.valueOf((char) (x + 96));
+		String sX = String.valueOf((char) (x + 97));
 		return sX + " " + sY;
 	}
 

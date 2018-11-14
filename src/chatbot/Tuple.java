@@ -18,7 +18,7 @@ public class Tuple {
 	@Override
     public String toString() {
 		String sY = String.valueOf(Y + 1);
-		String sX = String.valueOf((char) (X + 96));
+		String sX = String.valueOf((char) (X + 97));
 		return sX + " " + sY;
     }
 

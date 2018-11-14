@@ -16,7 +16,8 @@ public class BattleSeaParser implements IParser {
 		return x < 10 && x > -1 && y < 10 && y > -1;
 	} 
 	
-	public Reply ProcessPlayerAnswer(String command, int id) {	
+	public Reply ProcessPlayerAnswer(String userCommand, int id) {
+		String command = userCommand.toLowerCase();
 		if (!game.isActive())
 			return new Reply("Game wasn't started", null);
 		switch (command) {
@@ -50,7 +51,7 @@ public class BattleSeaParser implements IParser {
 				String[] coord = command.split(" ");
 				
 				int y = Integer.parseInt(coord[1]) - 1;
-				int x = (int) coord[0].charAt(0) - 96;
+				int x = (int) coord[0].charAt(0) - 97;
 				
 				game.setPlayerTurn();
 				if (coordinatesInFormat(x, y))

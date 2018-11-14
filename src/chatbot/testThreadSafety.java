@@ -17,22 +17,18 @@ class testThreadSafety {
 		db.connect();
 		Chatbot bot = new Chatbot(new GameFactory(), db);
 		int id1 = 2; 
-		char letter = 'A';
-		SentMessageTest[] array = new SentMessageTest[100];
-		BattleSea[] gameAr = new BattleSea[100];
-		for(var i = 0; i< 100; i++) {
+		char letter = 'a';
+		SentMessageTest[] array = new SentMessageTest[1000];
+		BattleSea[] gameAr = new BattleSea[1000];
+		for(var i = 0; i< 1000; i++) {
 			bot.ProcessRequest("/start", id1 + i);
-			array[i] = new SentMessageTest(bot, letter, id1 + i, i % 10 + 1);
 			gameAr[i] = (BattleSea)db.getData(id1 + i);
 			BattleSeaParser parser = new BattleSeaParser(gameAr[i]);
-			int count = i % 10 + 1;
-			StringBuilder message = new StringBuilder();
-			if (count < 10)
-				message.append(letter).append(' ').append((char)count);
-			else
-				message.append(letter).append(' ').append("10");
-			parser.ProcessPlayerAnswer(message.toString(), id1 + i);
-			if(i % 10 == 0 && i >=10) {
+			int count = (i/10) % 10 + 1;
+			String message = letter + " " + count;
+			parser.ProcessPlayerAnswer(message, id1 + i);
+			array[i] = new SentMessageTest(bot, id1 + i, message);
+			if((i/10) % 10 == 0 && i >=100) {
 				letter = (char)(letter + 1);
 			}
 			
@@ -45,8 +41,8 @@ class testThreadSafety {
 				
 			}
 		System.out.println(1);
-		for(var i = 0; i < 100; i++)
-			System.out.println(gameAr[i].EqualBattleSeaNotFull((BattleSea)db.getData(id1 + i)));
+		for(var i = 0; i < 1000; i++)
+			assertEquals(gameAr[i].EqualBattleSeaNotFull((BattleSea)db.getData(id1 + i)), true);
 	}
 
 }
