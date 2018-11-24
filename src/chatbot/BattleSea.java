@@ -1,13 +1,9 @@
 package chatbot;
 
 import java.util.ArrayList;
-import db.DataBase;
-import db.DataItem;
 
-import java.util.Arrays;
 import java.util.Random;
 
-import com.fasterxml.jackson.core.util.DefaultPrettyPrinter.Indenter;
 
 public class BattleSea implements IGame {
 

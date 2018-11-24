@@ -4,13 +4,7 @@ public class SentMessageTest extends Thread {
 	IBot Bot;
 	int Id;
 	private String message;
-	private volatile boolean mFinish = false;
-	
-	
-	public void finish()
-	{
-		mFinish = true; 
-	}
+
 	
 	SentMessageTest(IBot Bot, int Id, String message){
 		this.Bot = Bot;
@@ -22,7 +16,6 @@ public class SentMessageTest extends Thread {
 	public void run()
 	{
 		Bot.ProcessRequest(message, this.Id);
-		this.mFinish = true;
 		return;
 	}
 }

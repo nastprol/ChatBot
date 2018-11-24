@@ -1,12 +1,7 @@
 package db;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.Objects;
-
 import chatbot.BattleSea;
-import chatbot.BotMap;
-import javassist.NotFoundException;
 
 public class DataBase implements IDataBase {
 
@@ -34,12 +29,14 @@ public class DataBase implements IDataBase {
 
 	public void initDatabase() {
 		try {
+			
 			try {
 				Class.forName("org.sqlite.JDBC");
 			} catch(ClassNotFoundException ex) {
 				ex.printStackTrace();
 				System.exit(1);
 			}
+			
 			String dbUrl = System.getenv("DB_URL");
 			c = DriverManager.getConnection(dbUrl);
 			if (c.isClosed())

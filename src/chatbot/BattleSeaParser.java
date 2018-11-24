@@ -6,7 +6,7 @@ import java.util.Arrays;
 public class BattleSeaParser implements IParser {
 	
 	private BattleSea game;
-	private final ArrayList answers = new ArrayList(Arrays.asList("miss", "kill", "damage"));
+	private final ArrayList<String> answers = new ArrayList<String>(Arrays.asList("miss", "kill", "damage"));
 	
 	public BattleSeaParser(BattleSea game) {
 		this.game = game;
