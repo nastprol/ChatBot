@@ -3,6 +3,12 @@ package chatbot;
 public class Tuple {
 	public final int X;
 	public final int Y;
+	
+	public Tuple()
+	{
+		this.X = 0;
+		this.Y = 0;
+	}
 
 	public Tuple(int x, int y) {
 		this.X = x;
@@ -12,7 +18,7 @@ public class Tuple {
 	@Override
     public String toString() {
 		String sY = String.valueOf(Y + 1);
-		String sX = String.valueOf((char) (X + 96));
+		String sX = String.valueOf((char) (X + 97));
 		return sX + " " + sY;
     }
 

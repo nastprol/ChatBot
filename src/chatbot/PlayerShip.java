@@ -1,6 +1,7 @@
 package chatbot; 
 
 public class PlayerShip extends Ship {
+	public PlayerShip(){}
 	
 	public PlayerShip(int length, int position)
 	{

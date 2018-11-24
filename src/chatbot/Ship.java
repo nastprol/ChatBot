@@ -11,10 +11,30 @@ public class Ship {
 		this.position = position;
 	}
 	
+	public Ship()
+	{
+		
+	}
+	
 	public Ship(int position,Orientation orientation,int  length)
 	{
 		this.length = length;
 		this.position = position;
 		this.orientation = orientation;
+	}
+	
+	public int getLength()
+	{
+		return length;
+	}
+	
+	public int getPosition()
+	{
+		return position;
+	}
+	
+	public int getOrientationToInt()
+	{
+		return orientation.ordinal();
 	}
 } 

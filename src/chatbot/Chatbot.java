@@ -1,18 +1,17 @@
 package chatbot;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+import db.IDataBase;
 
-public class Chatbot {
+public class Chatbot implements IBot {
 
 	private IGame game;
 	private IGameFactory gameFactory;
 	private IParser parser;
+	private IDataBase db;
 
-	Chatbot(IGameFactory gameFactory) {
+	Chatbot(IGameFactory gameFactory, IDataBase db) {
 		this.gameFactory = gameFactory;
-		game = this.gameFactory.create();
-		parser = this.gameFactory.createParser();
+		this.db = db;
 	}
 	
 	protected IGame getGame() {
@@ -22,6 +21,7 @@ public class Chatbot {
 	public Reply ProcessRequest(String userRequest, int id) {
 
 		String request = userRequest.toLowerCase();
+		
 		switch (request) {
 		case "/help":{
 			return new Reply("/exit if you wanna leave this game\n"
@@ -29,7 +29,12 @@ public class Chatbot {
 					+ "/whoareyou if you wanna get know game's rules", null);
 		}
 		case "/exit":{
+			game = this.gameFactory.create(db, id);
+			parser = this.gameFactory.createParser();
+			
 			this.game.SetInactive();
+			db.removeUserData(id);
+
 			return new Reply("Game is over", null);
 		}
 		case "":
@@ -41,19 +46,27 @@ public class Chatbot {
 			return new Reply("", null);
 		}
 		case "/start": {
-			if (game.isActive()) {
-				game = this.gameFactory.create();
-				parser = this.gameFactory.createParser();
-			}
+
+			db.removeUserData(id);
+			
+			game = this.gameFactory.create(db, id);
+			parser = this.gameFactory.createParser();
 			game.SetActive();
 			
-			return new Reply(game.GetIntroductionMessage(), null);
+			Reply answer = new Reply(game.GetIntroductionMessage(), null);
+			db.setDataItem(id, game);
+			return answer;
 		}
 		case "/whoareyou": {
 			return new Reply(game.GetIntroductionMessage(), null);
 		}
 		default: {
-			return parser.ProcessPlayerAnswer(request, id);
+			game = this.gameFactory.create(db, id);
+			parser = this.gameFactory.createParser();
+			
+			Reply answer = parser.ProcessPlayerAnswer(request, id);
+			db.setDataItem(id, game);
+			return answer;
 		}
 		}
 	}

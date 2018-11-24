@@ -1,5 +1,5 @@
 package chatbot;
-/*
+
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
@@ -8,62 +8,68 @@ class testGameSituations {
 
 	private String CoordinatesToString(int x, int y) {
 		String sY = String.valueOf(y + 1);
-		String sX = String.valueOf((char) (x + 96));
+		String sX = String.valueOf((char) (x + 97));
 		return sX + " " + sY;
 	}
 
 	@Test
 	void testDamageOneShip() {
-
-		var map = new BotMap();
-		var game = new BattleSea(map);
-		var report = "";
+		BotMap map = new BotMap();
+		BattleSea game = new BattleSea(map, true);
+		Reply reply = null;
+		BattleSeaParser parser = new  BattleSeaParser(game);
+		int id = 1;
 		game.SetActive();
-		for (var i = 0; i < 10; i++) {
-			for (var j = 0; j < 10; j++) {
+		for (int i = 0; i < 10; i++) {
+			for (int j = 0; j < 10; j++) {
 				if (map.GetStateCell(i, j) != Report.miss) {
-					report = game.Play(CoordinatesToString(i, j));
+					reply = parser.ProcessPlayerAnswer(CoordinatesToString(i,j), id);
 					break;
 				}
 			}
 		}
-		assertEquals(report == "damage" || report == "kill", true);
+		assertEquals(reply.botAnswer == "damage" || reply.botAnswer == "kill", true);
 	}
 
 	@Test
 	void testMissShip() {
 
-		var map = new BotMap();
-		var game = new BattleSea(map);
-		var report = "";
+		BotMap map = new BotMap();
+		BattleSea game = new BattleSea(map, true);
+		Reply reply = null;
+		BattleSeaParser parser = new  BattleSeaParser(game);
+		int id = 1;
 		game.SetActive();
-		for (var i = 0; i < 10; i++) {
-			for (var j = 0; j < 10; j++) {
+		for (int i = 0; i < 10; i++) {
+			for (int j = 0; j < 10; j++) {
 				if (map.GetStateCell(i, j) == Report.miss) {
-					report = game.Play(CoordinatesToString(i, j));
+					game.setPlayerTurn();
+					reply = parser.ProcessPlayerAnswer(CoordinatesToString(i,j), id);
 					break;
 				}
 			}
 		}
-		System.out.println(report.substring(0, 4));
-		assertEquals(report.substring(0, 4), "miss");
+		assertEquals(reply.botAnswer.substring(0, 4), "miss");
 	}
 
 	@Test
 	void testKillAllShips() {
 
-		var map = new BotMap();
-		var game = new BattleSea(map);
-		var report = "";
+		BotMap map = new BotMap();
+		BattleSea game = new BattleSea(map, true);
+		Reply reply = null;
+		BattleSeaParser parser = new  BattleSeaParser(game);
+		int id = 1;
 		game.SetActive();
-		var count = 0;
-		for (var i = 0; i < 10; i++) {
-			for (var j = 0; j < 10; j++) {
+		int count = 0;
+		for (int i = 0; i < 10; i++) {
+			for (int j = 0; j < 10; j++) {
 				if (map.GetStateCell(i, j) != Report.miss) {
-					report = game.Play(CoordinatesToString(i, j));
-					game.Play("miss");
-					if (report == "kill")
+					reply = parser.ProcessPlayerAnswer(CoordinatesToString(i,j), id);
+					parser.ProcessPlayerAnswer("miss", id);
+					if (reply.botAnswer == "kill")
 						count += 1;
+					
 				}
 			}
 		}
@@ -74,15 +80,17 @@ class testGameSituations {
 	@Test
 	void testKillPlayerShip() {
 
-		var map = new BotMap();
-		var game = new BattleSea(map);
+		BotMap map = new BotMap();
+		BattleSea game = new BattleSea(map, false);
+		BattleSeaParser parser = new  BattleSeaParser(game);
+		int id = 1;
 		game.SetActive();
 
-		for (var i = 0; i < 10; i++) {
-			game.Play("kill");
+		for (int i = 0; i < 10; i++) {
+			parser.ProcessPlayerAnswer("kill", id);
 		}
 		assertEquals(game.isActive(), false);
 	}
 	
 
-}*/
+}

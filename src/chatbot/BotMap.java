@@ -1,30 +1,37 @@
 package chatbot;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
 
 public class BotMap extends Map<Integer> {
 	
-	private ArrayList<Integer> visetedCell;
 	private int[] map;
 	
-	BotMap()
+	public BotMap()
 	{ 
 		super();
-		this.InitializePossibleCell();
+		ArrayList<Integer> visetedCell = this.InitializePossibleCell();
 		this.fleet = new Fleet(10, "BotShips");
 		this.map = new int[100];
-		fillMap();
+		fillMap(visetedCell);
 	}
 	
-	private void InitializePossibleCell()
+	BotMap(int[] map, int count, int[] positions, int[] orientations, int[] countDecks, int[]scoreAlive)
 	{
-		this.visetedCell = new ArrayList<Integer>();
-		for (int i = 0; i < 100; i++)
-			this.visetedCell.add(i);
+		this.map = Arrays.copyOf(map, map.length);
+		this.fleet = new Fleet(count, positions, orientations, countDecks, scoreAlive);
 	}
 	
-	private void fillMap()
+	private ArrayList<Integer> InitializePossibleCell()
+	{
+		ArrayList<Integer> visetedCell = new ArrayList<Integer>();
+		for (int i = 0; i < 100; i++)
+			visetedCell.add(i);
+		return visetedCell;
+	}
+	
+	private void fillMap(ArrayList<Integer> visetedCell)
 	{
 		Random random = new Random();
 		boolean check = false;
@@ -34,22 +41,22 @@ public class BotMap extends Map<Integer> {
 			{
 				while (!check)
 				{	
-					int index = random.nextInt(this.visetedCell.size());
+					int index = random.nextInt(visetedCell.size());
 					Orientation orientation = (random.nextInt(2) == 0)
 							? Orientation.horizontally
 							: Orientation.vertically;
-					int position = this.visetedCell.get(index);
+					int position = visetedCell.get(index);
 					Tuple coordinates = this.ChangePositionToCoordinates(position);
 					check = (orientation == Orientation.vertically)
-							? this.CanStay(coordinates.Y, i,coordinates.X, orientation)
-							: this.CanStay(coordinates.X, i, coordinates.Y, orientation);
+							? this.CanStay(coordinates.Y, i,coordinates.X, orientation, visetedCell)
+							: this.CanStay(coordinates.X, i, coordinates.Y, orientation, visetedCell);
 					if (check)
 					{
 						this.fleet.UpCount();
 						this.fleet.BotShips[this.fleet.Count() - 1] = new BotShip(i, position, orientation, this.fleet.Count(), coordinates.X, coordinates.Y);
 						BotShip curShip = this.fleet.BotShips[this.fleet.Count() - 1];
 						this.markShips(curShip);
-						this.SelectionArea(curShip);
+						this.SelectionArea(curShip, visetedCell);
 					}
 				}
 				check = false;
@@ -78,10 +85,10 @@ public class BotMap extends Map<Integer> {
 	
 	
 	@Override
-	protected void ProccessCell(int position) {
-		int index = this.visetedCell.indexOf(position);
+	protected void ProccessCell(int position, ArrayList<Integer> visetedCell) {
+		int index = visetedCell.indexOf(position);
 		if (index != -1)
-			this.visetedCell.remove(index);		
+			visetedCell.remove(index);		
 	}
 
 	@Override
@@ -115,8 +122,8 @@ public class BotMap extends Map<Integer> {
 	}
 
 	@Override
-	protected boolean CheckConditional(int position) {
-		return this.visetedCell.indexOf(position) == -1;
+	protected boolean CheckConditional(int position, ArrayList<Integer> visetedCell) {
+		return visetedCell.indexOf(position) == -1;
 	}
 
 	@Override
@@ -131,4 +138,21 @@ public class BotMap extends Map<Integer> {
 		if (Report.damage == report || Report.kill == report)
 			this.map[position] = 0;
 	}
+
+	@Override
+	public int[] ChangeReportToInt() {
+		int[] result = new int[map.length];
+		for (int i = 0; i < map.length; i++)
+			result[i] = map[i];
+		return result;
+	}
+	
+	public boolean EqualMap(BotMap botMap) {
+		boolean result = true;
+		for(int i = 0; i < this.map.length; i++)
+			result = result && botMap.map[i] == this.map[i];
+		return result;
+	}
+
+	
 }

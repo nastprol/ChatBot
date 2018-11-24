@@ -7,18 +7,18 @@ import db.DataItem;
 import java.util.Arrays;
 import java.util.Random;
 
+import com.fasterxml.jackson.core.util.DefaultPrettyPrinter.Indenter;
+
 public class BattleSea implements IGame {
 
-	private Map<Report> PlayerMap;
+	private PlayerMap PlayerMap;
 	private boolean IsActive;
 	private boolean FindNextShip;
 	private PlayerShip CurrentShip;
 	private int Position;
-	private Map<Integer> BotMap;
+	private BotMap BotMap;
 	private boolean isPlayerTurn;
 	private int playerID;
-	
-	private DataBase db;
 
 	private String introductionMessage = "This is game Sea Battle. Your turn is first.\n "
 			+ "You have field 10*10. There are one 4-deck, two 3-deck, three 2-deck \n"
@@ -30,11 +30,6 @@ public class BattleSea implements IGame {
 	}
 
 	public BattleSea() {
-
-		db = new DataBase();
-		db.initDatabase();
-		db.connect();
-
 		PlayerMap = new PlayerMap();
 		IsActive = false;
 		FindNextShip = true;
@@ -43,12 +38,9 @@ public class BattleSea implements IGame {
 		BotMap = new BotMap();
 		isPlayerTurn = true;
 	}
-	
-	//TODO записывать данные
 
-	public void initPlayerGame(int id) { 
+	public BattleSea(int id) {
 
-		//TODO переписать данные, если можем
 		PlayerMap = new PlayerMap();
 		IsActive = false;
 		FindNextShip = true;
@@ -58,25 +50,27 @@ public class BattleSea implements IGame {
 		isPlayerTurn = true;
 		playerID = id;
 	}
+	
 
-	public BattleSea(Map<Integer> map) {
+
+	public BattleSea(BotMap map, boolean isTurn) {
 		PlayerMap = new PlayerMap();
 		IsActive = false;
 		FindNextShip = true;
 		CurrentShip = new PlayerShip(0, 0);
 		Position = 0;
 		BotMap = map;
-		isPlayerTurn = true;
+		isPlayerTurn = isTurn;
 	}
 
-	public BattleSea(BotMap map, PlayerMap playerMap, boolean findNextShip, PlayerShip ship, int position) {
+	public BattleSea(BotMap map, PlayerMap playerMap, boolean findNextShip, PlayerShip ship, int position, boolean playerTurn) {
 		PlayerMap = playerMap;
 		IsActive = false;
 		FindNextShip = findNextShip;
 		CurrentShip = ship;
 		Position = position;
 		BotMap = map;
-		isPlayerTurn = true;
+		isPlayerTurn = playerTurn;
 	}
 
 	public boolean isPlayerTurn() {
@@ -113,6 +107,7 @@ public class BattleSea implements IGame {
 	}
 
 	protected void UpdatePlayerMap(Report report) {
+		this.isPlayerTurn = true;
 		if (FindNextShip) {
 			FindNextShip = report != Report.damage;
 			if (report == Report.damage) {
@@ -121,9 +116,10 @@ public class BattleSea implements IGame {
 			} else if (report == Report.kill) {
 				CurrentShip.FirstUpdate(Position);
 				PlayerMap.Set(Position, Report.kill);
-				PlayerMap.SelectionArea(CurrentShip);
+				PlayerMap.SelectionArea(CurrentShip, null);
 				PlayerMap.fleet.RegisterKill(CurrentShip);
 			} else {
+				this.isPlayerTurn = false;
 				PlayerMap.Set(Position, Report.miss);
 			}
 		} else {
@@ -134,13 +130,14 @@ public class BattleSea implements IGame {
 
 			}
 			if (report == Report.kill) {
-				PlayerMap.SelectionArea(CurrentShip);
+				PlayerMap.SelectionArea(CurrentShip, null);
 				PlayerMap.fleet.RegisterKill(CurrentShip);
 			}
 			if (report == Report.miss)
+				this.isPlayerTurn = false;
 				PlayerMap.Set(Position, Report.miss);
 		}
-		IsActive = PlayerMap.fleet.Count() != 0;
+		IsActive = PlayerMap.fleet.Count() != 0;		
 	}
 
 	protected Tuple Shoot() {
@@ -149,8 +146,8 @@ public class BattleSea implements IGame {
 		} else {
 			Position = ChooseShotToBeat(CurrentShip);
 		}
+		
 		return PlayerMap.ChangePositionToCoordinates(Position);
-
 	}
 
 	private Integer FindNewShip() {
@@ -190,9 +187,9 @@ public class BattleSea implements IGame {
 		for (int j = 0; j < 100; j++) {
 			coordinat = PlayerMap.ChangePositionToCoordinates(j);
 			ship.position = j;
-			if (PlayerMap.CanStay(coordinat.X, ship.length, coordinat.Y, Orientation.horizontally))
+			if (PlayerMap.CanStay(coordinat.X, ship.length, coordinat.Y, Orientation.horizontally, null))
 				PlusHorizontally(ship, probability);
-			if (PlayerMap.CanStay(coordinat.Y, ship.length, coordinat.X, Orientation.vertically))
+			if (PlayerMap.CanStay(coordinat.Y, ship.length, coordinat.X, Orientation.vertically, null))
 				PlusVertically(ship, probability);
 		}
 	}
@@ -242,12 +239,12 @@ public class BattleSea implements IGame {
 			if (ship.position - 1 >= 0 && PlayerMap.GetStateCell(ship.position - 1) == Report.empty)
 				directions.add(Direction.left);
 
-			if (PlayerMap.CanStay(coordinat.X, ship.length + 1, coordinat.Y, Orientation.horizontally))
+			if (PlayerMap.CanStay(coordinat.X, ship.length + 1, coordinat.Y, Orientation.horizontally, null))
 				directions.add(Direction.right);
 		}
 
 		if (ship.orientation != Orientation.horizontally) {
-			if (PlayerMap.CanStay(coordinat.Y, ship.length + 1, coordinat.X, Orientation.vertically))
+			if (PlayerMap.CanStay(coordinat.Y, ship.length + 1, coordinat.X, Orientation.vertically, null))
 				directions.add(Direction.down);
 			int upPosition = ship.position - 10 * ship.length;
 			if (upPosition >= 0 && PlayerMap.GetStateCell(upPosition) == Report.empty)
@@ -258,5 +255,24 @@ public class BattleSea implements IGame {
 	@Override
 	public boolean isActive() {
 		return this.IsActive;
+	}
+	
+	public boolean EqualBattleSea(BattleSea game)
+	{
+		return this.BotMap.EqualMap(game.BotMap) &&
+		this.PlayerMap.EqualMap(game.PlayerMap) &&
+		this.IsActive== game.IsActive &&
+		this.FindNextShip == game.FindNextShip &&
+		this.Position== game.Position &&
+		this.isPlayerTurn == game.isPlayerTurn &&
+		this.playerID == game.playerID;
+	}
+	
+	public boolean EqualBattleSeaNotFull(BattleSea game)
+	{
+		return this.BotMap.EqualMap(game.BotMap) &&
+		this.IsActive== game.IsActive &&
+		this.isPlayerTurn == game.isPlayerTurn &&
+		this.playerID == game.playerID;	
 	}
 }
