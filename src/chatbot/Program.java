@@ -27,7 +27,9 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiRequestException;
 import db.DataBase;
 import db.IDataBase;
 import dialog.HourTimer;
+import dialog.IManager;
 import dialog.ITimer;
+import dialog.Manager;
 
 public class Program {
 
@@ -59,8 +61,8 @@ public class Program {
 
 			db.initDatabase();
 			db.connect();
-
-			ITimer timer = new HourTimer();
+			IManager manager = new Manager(db);
+			ITimer timer = new HourTimer(manager);
 			timer.start();
 			
 			Chatbot bot = new Chatbot(new GameFactory(), db);

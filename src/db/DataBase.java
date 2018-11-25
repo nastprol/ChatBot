@@ -3,6 +3,7 @@ package db;
 import java.sql.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 import chatbot.BattleSea;
@@ -71,24 +72,23 @@ public class DataBase implements IDataBase {
 		return null;
 	}
 	
-	public Integer getHour(int userId) {
+	@SuppressWarnings("finally")
+	public ArrayList<Integer> getIdWithNeedTime(int time){
+		ArrayList<Integer> result = null;
 		try {
-
-			PreparedStatement stmt = c.prepareStatement("SELECT * FROM db1 WHERE user_id = ?;");
-			stmt.setInt(1, userId);
+			PreparedStatement stmt = c.prepareStatement("SELECT * FROM db1 where hour = ?;");
+			stmt.setInt(1, time);
 			ResultSet rs = stmt.executeQuery();
-
-			rs.next();
-			int hour = rs.getInt("hour");
-
+			result = new ArrayList<Integer>();
+			while(rs.next()) {
+				result.add(rs.getInt("hour"));
+			}
 			rs.close();
 			stmt.close();
-			return hour;
-		} catch (SQLException e) {
-			e.printStackTrace();
-			System.exit(1);
 		}
-		return null;
+		finally {
+			return result;
+		}
 	}
 
 	public void removeUserData(int userId) {

@@ -42,7 +42,6 @@ class testThreadSafety {
 			}
 		
 		for(var i = 0; i < 1000; i++) {
-			System.out.println(array[i].Id);
 			assertEquals(true, gameAr[i].EqualBattleSeaNotFull((BattleSea)db.getData(id1 + i)));
 		}
 	}
