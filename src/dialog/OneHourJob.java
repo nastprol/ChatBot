@@ -16,7 +16,7 @@ class OneHourJob extends TimerTask {
     public void run() {
     	DateFormat dateFormat = new SimpleDateFormat("HH");
     	Date date = new Date();
-    	var hour =  Integer.parseInt(dateFormat.format(date));
+    	int hour =  Integer.parseInt(dateFormat.format(date));
     	//System.out.println(hour);
     	manager.initialDialog(hour);
     }

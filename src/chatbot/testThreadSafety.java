@@ -20,7 +20,7 @@ class testThreadSafety {
 		char letter = 'a';
 		SentMessageTest[] array = new SentMessageTest[1000];
 		BattleSea[] gameAr = new BattleSea[1000];
-		for(var i = 0; i< 1000; i++) {
+		for(int i = 0; i< 1000; i++) {
 			bot.ProcessRequest("/start", id1 + i);
 			gameAr[i] = (BattleSea)db.getData(id1 + i);
 			BattleSeaParser parser = new BattleSeaParser(gameAr[i]);
@@ -35,13 +35,13 @@ class testThreadSafety {
 			array[i].start();
 		}
 
-			for (var t : array) {
+			for (SentMessageTest t : array) {
 				
 				t.join();
 				
 			}
 		
-		for(var i = 0; i < 1000; i++) {
+		for(int i = 0; i < 1000; i++) {
 			assertEquals(true, gameAr[i].EqualBattleSeaNotFull((BattleSea)db.getData(id1 + i)));
 		}
 	}

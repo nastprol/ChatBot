@@ -52,6 +52,12 @@ public class TelegramCommunicator extends TelegramLongPollingBot {
             e.printStackTrace();
         }
     }
+    
+    public void SendMessage(int id, String text)
+    {
+    	 SendMessage sendMessage = new SendMessage(Integer.toString(id), text);
+    	 sendMessage.setReplyMarkup(new ReplyKeyboardRemove());
+    }
 
     private ReplyKeyboardMarkup setKeyboard(List<String> options) {
         ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();

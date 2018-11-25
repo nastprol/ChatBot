@@ -104,7 +104,7 @@ public class DataBase implements IDataBase {
 		try {
 			DateFormat dateFormat = new SimpleDateFormat("HH");
 	    	Date date = new Date();
-	    	var hour =  Integer.parseInt(dateFormat.format(date));
+	    	int hour =  Integer.parseInt(dateFormat.format(date));
 
 			PreparedStatement stmt;
 			stmt = c.prepareStatement("INSERT INTO db1(user_id, jsonString, hour) VALUES(?, ?, ?)");
@@ -143,7 +143,7 @@ public class DataBase implements IDataBase {
 			
 			DateFormat dateFormat = new SimpleDateFormat("HH");
 	    	Date date = new Date();
-	    	var hour =  Integer.parseInt(dateFormat.format(date));
+	    	int hour =  Integer.parseInt(dateFormat.format(date));
 
 			PreparedStatement stmt;
 			stmt = c.prepareStatement("INSERT INTO db1(user_id, jsonString, hour) VALUES(?, ?, ?)");
