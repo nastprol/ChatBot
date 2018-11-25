@@ -18,7 +18,7 @@ public class Chatbot implements IBot {
 		return game;
 	}
 
-	public Reply ProcessRequest(String userRequest, int id) {
+	public synchronized Reply ProcessRequest(String userRequest, int id) {
 
 		String request = userRequest.toLowerCase();
 		

@@ -40,9 +40,11 @@ class testThreadSafety {
 				t.join();
 				
 			}
-		System.out.println(1);
-		for(var i = 0; i < 1000; i++)
-			assertEquals(gameAr[i].EqualBattleSeaNotFull((BattleSea)db.getData(id1 + i)), true);
+		
+		for(var i = 0; i < 1000; i++) {
+			System.out.println(array[i].Id);
+			assertEquals(true, gameAr[i].EqualBattleSeaNotFull((BattleSea)db.getData(id1 + i)));
+		}
 	}
 
 }

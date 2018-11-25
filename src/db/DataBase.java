@@ -1,6 +1,10 @@
 package db;
 
 import java.sql.*;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import chatbot.BattleSea;
 
 public class DataBase implements IDataBase {
@@ -30,21 +34,14 @@ public class DataBase implements IDataBase {
 	public void initDatabase() {
 		try {
 			
-			try {
-				Class.forName("org.sqlite.JDBC");
-			} catch(ClassNotFoundException ex) {
-				ex.printStackTrace();
-				System.exit(1);
-			}
-			
 			String dbUrl = System.getenv("DB_URL");
 			c = DriverManager.getConnection(dbUrl);
 			if (c.isClosed())
 				tryConnect();
 
 			Statement stmt = c.createStatement();
-			String sql = "CREATE TABLE IF NOT EXISTS db (" + "user_id INT PRIMARY KEY NOT NULL, "
-					+ "jsonString TEXT)";
+			String sql = "CREATE TABLE IF NOT EXISTS db1 (" + "user_id INT PRIMARY KEY NOT NULL, "
+					+ "jsonString TEXT, hour INT)";
 			stmt.executeUpdate(sql);
 			stmt.close();
 		} catch (SQLException e) {
@@ -56,7 +53,7 @@ public class DataBase implements IDataBase {
 	public Object getData(int userId) {
 		try {
 
-			PreparedStatement stmt = c.prepareStatement("SELECT * FROM db WHERE user_id = ?;");
+			PreparedStatement stmt = c.prepareStatement("SELECT * FROM db1 WHERE user_id = ?;");
 			stmt.setInt(1, userId);
 			ResultSet rs = stmt.executeQuery();
 
@@ -73,9 +70,56 @@ public class DataBase implements IDataBase {
 		}
 		return null;
 	}
+	
+	public Integer getHour(int userId) {
+		try {
+
+			PreparedStatement stmt = c.prepareStatement("SELECT * FROM db1 WHERE user_id = ?;");
+			stmt.setInt(1, userId);
+			ResultSet rs = stmt.executeQuery();
+
+			rs.next();
+			int hour = rs.getInt("hour");
+
+			rs.close();
+			stmt.close();
+			return hour;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.exit(1);
+		}
+		return null;
+	}
 
 	public void removeUserData(int userId) {
-		runSql(userId, "DELETE FROM db WHERE user_id = ?");
+		delete(userId);
+		setInactive(userId);
+	}
+	
+	public void delete(int userId) {
+		runSql(userId, "DELETE FROM db1 WHERE user_id = ?");
+	}
+	
+	private void setInactive(int userId) {
+		try {
+			DateFormat dateFormat = new SimpleDateFormat("HH");
+	    	Date date = new Date();
+	    	var hour =  Integer.parseInt(dateFormat.format(date));
+
+			PreparedStatement stmt;
+			stmt = c.prepareStatement("INSERT INTO db1(user_id, jsonString, hour) VALUES(?, ?, ?)");
+			
+			stmt.setInt(1, userId);
+			stmt.setString(2, null);
+			stmt.setInt(3, hour);
+			
+
+			stmt.executeUpdate();
+			stmt.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			System.exit(1);
+		}
 	}
 
 	private void runSql(int userId, String command) {
@@ -92,16 +136,22 @@ public class DataBase implements IDataBase {
 
 	public void setDataItem(int userId,Object object) {
 		try {
-			removeUserData(userId);
+			delete(userId);
 			
 			Json json = new Json<BattleSea>( BattleSea.class);
 			String jsonString = json.GetStringJson(object);
+			
+			DateFormat dateFormat = new SimpleDateFormat("HH");
+	    	Date date = new Date();
+	    	var hour =  Integer.parseInt(dateFormat.format(date));
 
 			PreparedStatement stmt;
-			stmt = c.prepareStatement("INSERT INTO db(user_id, jsonString) VALUES(?, ?)");
+			stmt = c.prepareStatement("INSERT INTO db1(user_id, jsonString, hour) VALUES(?, ?, ?)");
 			
 			stmt.setInt(1, userId);
 			stmt.setString(2, jsonString);
+			stmt.setInt(3, hour);
+			
 
 			stmt.executeUpdate();
 			stmt.close();
@@ -110,26 +160,16 @@ public class DataBase implements IDataBase {
 			System.exit(1);
 		}
 	}
-
-	public Integer[] changeIntToInteger(int[] primitiveArray)
-	{
-		Integer[] objectArray = new Integer[primitiveArray.length];
-
-		for(int ctr = 0; ctr < primitiveArray.length; ctr++) {
-		    objectArray[ctr] = Integer.valueOf(primitiveArray[ctr]);
-		}
-		 return objectArray;
-	}
 	
 	@SuppressWarnings("finally")
-	public boolean checkId(int idUser)
+	public boolean checkIdIsActive(int idUser)
 	{
 		boolean isUserExists = false;
-        try (PreparedStatement ps = c.prepareStatement("select 1 from db where user_id = ?")) {
+        try (PreparedStatement ps = c.prepareStatement("select 1 from db1 where user_id = ?")) {
             ps.setInt(1, idUser);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
-                    isUserExists = true;
+                    isUserExists = getData(idUser) != null;
                 }
             }
         }
