@@ -41,7 +41,7 @@ public class DataBase implements IDataBase {
 				tryConnect();
 
 			Statement stmt = c.createStatement();
-			String sql = "CREATE TABLE IF NOT EXISTS db1 (" + "user_id INT PRIMARY KEY NOT NULL, "
+			String sql = "CREATE TABLE IF NOT EXISTS db2 (" + "user_id INT PRIMARY KEY NOT NULL, "
 					+ "jsonString TEXT, hour INT)";
 			stmt.executeUpdate(sql);
 			stmt.close();
@@ -54,7 +54,7 @@ public class DataBase implements IDataBase {
 	public Object getData(int userId) {
 		try {
 
-			PreparedStatement stmt = c.prepareStatement("SELECT * FROM db1 WHERE user_id = ?;");
+			PreparedStatement stmt = c.prepareStatement("SELECT * FROM db2 WHERE user_id = ?;");
 			stmt.setInt(1, userId);
 			ResultSet rs = stmt.executeQuery();
 
@@ -73,15 +73,15 @@ public class DataBase implements IDataBase {
 	}
 	
 	@SuppressWarnings("finally")
-	public ArrayList<Integer> getIdWithNeedTime(int time){
+	public ArrayList<Integer> getIdWithTime(int time){
 		ArrayList<Integer> result = null;
 		try {
-			PreparedStatement stmt = c.prepareStatement("SELECT * FROM db1 where hour = ?;");
+			PreparedStatement stmt = c.prepareStatement("SELECT * FROM db2 where hour = ?;");
 			stmt.setInt(1, time);
 			ResultSet rs = stmt.executeQuery();
 			result = new ArrayList<Integer>();
 			while(rs.next()) {
-				result.add(rs.getInt("hour"));
+				result.add(rs.getInt("user_id"));
 			}
 			rs.close();
 			stmt.close();
@@ -97,7 +97,7 @@ public class DataBase implements IDataBase {
 	}
 	
 	public void delete(int userId) {
-		runSql(userId, "DELETE FROM db1 WHERE user_id = ?");
+		runSql(userId, "DELETE FROM db2 WHERE user_id = ?");
 	}
 	
 	private void setInactive(int userId) {
@@ -107,7 +107,7 @@ public class DataBase implements IDataBase {
 	    	int hour =  Integer.parseInt(dateFormat.format(date));
 
 			PreparedStatement stmt;
-			stmt = c.prepareStatement("INSERT INTO db1(user_id, jsonString, hour) VALUES(?, ?, ?)");
+			stmt = c.prepareStatement("INSERT INTO db2(user_id, jsonString, hour) VALUES(?, ?, ?)");
 			
 			stmt.setInt(1, userId);
 			stmt.setString(2, null);
@@ -146,7 +146,7 @@ public class DataBase implements IDataBase {
 	    	int hour =  Integer.parseInt(dateFormat.format(date));
 
 			PreparedStatement stmt;
-			stmt = c.prepareStatement("INSERT INTO db1(user_id, jsonString, hour) VALUES(?, ?, ?)");
+			stmt = c.prepareStatement("INSERT INTO db2(user_id, jsonString, hour) VALUES(?, ?, ?)");
 			
 			stmt.setInt(1, userId);
 			stmt.setString(2, jsonString);
@@ -165,7 +165,7 @@ public class DataBase implements IDataBase {
 	public boolean checkIdIsActive(int idUser)
 	{
 		boolean isUserExists = false;
-        try (PreparedStatement ps = c.prepareStatement("select 1 from db1 where user_id = ?")) {
+        try (PreparedStatement ps = c.prepareStatement("select 1 from db2 where user_id = ?")) {
             ps.setInt(1, idUser);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {

@@ -28,8 +28,10 @@ import db.DataBase;
 import db.IDataBase;
 import dialog.HourTimer;
 import dialog.IManager;
+import dialog.IThrottlingClass;
 import dialog.ITimer;
 import dialog.Manager;
+import dialog.ThrottlingClass;
 
 public class Program {
 
@@ -61,15 +63,19 @@ public class Program {
 
 			db.initDatabase();
 			db.connect();
-			IManager manager = new Manager(db);
-			ITimer timer = new HourTimer(manager);
-			timer.start();
+			
 			
 			Chatbot bot = new Chatbot(new GameFactory(), db);
 			
 			BotConfig cf = new BotConfig();
 			TelegramCommunicator tg = new TelegramCommunicator(botOptions, bot, cf);
 			botsApi.registerBot(tg);
+			
+			IThrottlingClass throttling = new ThrottlingClass(tg);
+			IManager manager = new Manager(db, throttling);
+			ITimer timer = new HourTimer(manager);
+			timer.start();
+			
 		} catch (TelegramApiRequestException e) {
 			e.printStackTrace();
 		}

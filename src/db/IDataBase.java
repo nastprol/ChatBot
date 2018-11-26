@@ -9,5 +9,5 @@ public interface IDataBase {
 	public void setDataItem(int userId,Object object);
 	public boolean checkIdIsActive(int idUser);
 	public void removeUserData(int userId);
-	public ArrayList<Integer> getIdWithNeedTime(int time);
+	public ArrayList<Integer> getIdWithTime(int time);
 }

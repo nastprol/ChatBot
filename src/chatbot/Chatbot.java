@@ -23,6 +23,23 @@ public class Chatbot implements IBot {
 		String request = userRequest.toLowerCase();
 		
 		switch (request) {
+		case "yes":{
+			var reply = "Let's go!\n";
+			
+			game = this.gameFactory.create(db, id);
+			parser = this.gameFactory.createParser();
+			
+			Reply answer = new Reply();
+			if(game.isPlayerTurn())
+				answer = parser.ProcessPlayerAnswer(request, id);
+			db.setDataItem(id, game);
+			answer.botAnswer = reply + answer.botAnswer;
+			return answer;
+			
+		}
+		case "no":{
+			return new Reply("See you later", null);
+		}
 		case "/help":{
 			return new Reply("/exit if you wanna leave this game\n"
 					+ "/start if you wanna start or restart game\n"

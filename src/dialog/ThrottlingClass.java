@@ -6,42 +6,47 @@ import junit.framework.Protectable;
 
 public class ThrottlingClass implements IThrottlingClass {
 	
-	private ArrayDeque<Integer> PriorityIdQueue = new ArrayDeque<Integer>();
+	private static ArrayDeque<Integer> PriorityIdQueue = new ArrayDeque<Integer>();
 	private TelegramCommunicator tg;
+	private static int sentMessages = 0;
 
 	public ThrottlingClass(TelegramCommunicator communicator)
 	{
-		tg =communicator;
+		tg = communicator;
 	}
 	
-	private void traversalDeque()
+	private synchronized void traversalDeque()
 	{
 		Send2000Messege();
-		while(PriorityIdQueue.peek()!=null){
+		while(!PriorityIdQueue.isEmpty()){
 			try {
-				Thread.sleep(1000*60*60);
+				if (sentMessages == 2000) {
+					Thread.sleep(1000*60*60);
+					sentMessages = 0;
+				}
 				Send2000Messege();
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
 			}
-		
-		  
 	}
 	
-	private void Send2000Messege()
+	private synchronized void Send2000Messege()
 	{
 		SendMessege();
 			for(int i = 0; i < 1999;i++) {
-				if(PriorityIdQueue.peek()==null)
-					break;
+				if(PriorityIdQueue.peek()==null) {
+					this.sentMessages += i + 1;
+					return;
+				}
 				try {
 					Thread.sleep(33);
 					SendMessege();
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
-			}
+			} 
+			this.sentMessages = 2000;
 	}
 	
 	private void SendMessege() {
@@ -54,13 +59,8 @@ public class ThrottlingClass implements IThrottlingClass {
 	}
 
 	public void Throttling(List<Integer> ids) {
-		if(PriorityIdQueue.isEmpty())
-		{
-			PriorityIdQueue.addAll(ids);
-			traversalDeque();
-		}
 		PriorityIdQueue.addAll(ids);
-		
+		traversalDeque();
 	}
 	
 
