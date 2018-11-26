@@ -52,7 +52,7 @@ public class ThrottlingClass implements IThrottlingClass {
 	private void SendMessege() {
 		int id = PriorityIdQueue.pop();
 		try {
-		tg.SendMessage(id, "не хочешь сыграть в морской бой?");
+		tg.SendMessage(id, "Would you like to play?");
 		} catch (Exception e) {;
 		}
 		System.out.println(id);

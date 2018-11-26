@@ -66,6 +66,7 @@ public class BattleSeaParser implements IParser {
 					return new Reply(check, null);
 				}
 			} catch (Exception e) {
+				e.printStackTrace();
 				return new Reply("Send me coordinates in format <A-J> <1-10>", null);
 			}
 			return new Reply("Send me coordinates in format <A-J> <1-10>", null);
