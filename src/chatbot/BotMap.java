@@ -106,7 +106,7 @@ public class BotMap extends Map<Integer> {
 		}
 		else
 		{
-			this.fleet.BotShips[this.map[position] - 1].ÑhageState();
+			this.fleet.BotShips[this.map[position] - 1].changState();
 			State currentState = this.fleet.BotShips[this.map[position] - 1].State();
 			this.map[position] = 0;
 			if (currentState == State.killed)
