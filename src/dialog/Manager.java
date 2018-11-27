@@ -16,7 +16,6 @@ public class Manager implements IManager {
 	@Override
 	public void initialDialog(int time) {
 		ArrayList<Integer> listId = this.db.getIdWithTime(time);
-		System.out.println(listId.isEmpty());
 		if (listId != null && !listId.isEmpty()) {
 			this.throttling.Throttling(listId);
 		}

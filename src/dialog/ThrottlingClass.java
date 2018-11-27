@@ -55,7 +55,6 @@ public class ThrottlingClass implements IThrottlingClass {
 		tg.SendMessage(id, "Would you like to play?");
 		} catch (Exception e) {;
 		}
-		System.out.println(id);
 	}
 
 	public void Throttling(List<Integer> ids) {
