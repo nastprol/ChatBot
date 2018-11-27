@@ -34,7 +34,6 @@ public class DataBase implements IDataBase {
 
 	public void initDatabase() {
 		try {
-			
 			String dbUrl = System.getenv("DB_URL");
 			c = DriverManager.getConnection(dbUrl);
 			if (c.isClosed())
