@@ -1,1 +1,1 @@
-worker: sh target/bin/Bot -Djdbc.drivers=org.postgresql.Driver
+worker: sh src/bin/Bot -Djdbc.drivers=org.postgresql.Driver
