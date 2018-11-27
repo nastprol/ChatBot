@@ -6,7 +6,7 @@ import java.util.Arrays;
 public class BattleSeaParser implements IParser {
 	
 	private BattleSea game;
-	private final ArrayList answers = new ArrayList(Arrays.asList("miss", "kill", "damage"));
+	private final ArrayList<String> answers = new ArrayList<String>(Arrays.asList("miss", "kill", "damage"));
 	
 	public BattleSeaParser(BattleSea game) {
 		this.game = game;
@@ -66,6 +66,7 @@ public class BattleSeaParser implements IParser {
 					return new Reply(check, null);
 				}
 			} catch (Exception e) {
+				e.printStackTrace();
 				return new Reply("Send me coordinates in format <A-J> <1-10>", null);
 			}
 			return new Reply("Send me coordinates in format <A-J> <1-10>", null);

@@ -2,6 +2,7 @@
 <classpath>
 	<classpathentry including="**/*.java" kind="src" output="target/classes" path="src">
 		<attributes>
+			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="ChatBot"/>
 			<attribute name="optional" value="true"/>
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
@@ -15,12 +16,13 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/5"/>
 	<classpathentry kind="lib" path="C:/Users/Настя/Downloads/telegrambots-4.1-jar-with-dependencies.jar"/>
 	<classpathentry kind="lib" path="C:/Users/Настя/Documents/gson-1.4.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Настя/Documents/sqlite-jdbc-3.7.2.jar"/>
 	<classpathentry kind="con" path="org.eclipse.m2e.MAVEN2_CLASSPATH_CONTAINER">
 		<attributes>
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="C:/Users/Настя/Downloads/postgresql-42.2.5.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Настя/Documents/sqlite-jdbc-3.7.2.jar"/>
+
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

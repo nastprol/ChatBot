@@ -7,4 +7,5 @@ public interface IGame {
 	void SetActive();
 	
 	void SetInactive();
+	boolean isPlayerTurn();
 }

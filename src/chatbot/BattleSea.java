@@ -1,13 +1,9 @@
 package chatbot;
 
 import java.util.ArrayList;
-import db.DataBase;
-import db.DataItem;
 
-import java.util.Arrays;
 import java.util.Random;
 
-import com.fasterxml.jackson.core.util.DefaultPrettyPrinter.Indenter;
 
 public class BattleSea implements IGame {
 
@@ -100,7 +96,10 @@ public class BattleSea implements IGame {
 		String answer = report.toString();
 		if (report == Report.miss) {
 			Tuple point = Shoot();
-			answer += "\n" + point.toString();
+			if (point == null)
+				answer = "Game is over:(";
+			else
+				answer += "\n" + point.toString();
 		}
 		IsActive = BotMap.countShipsAlive() != 0;
 		return answer;
@@ -145,6 +144,8 @@ public class BattleSea implements IGame {
 			Position = FindNewShip();
 		} else {
 			Position = ChooseShotToBeat(CurrentShip);
+			if (Position == -1)
+				return null;
 		}
 		
 		return PlayerMap.ChangePositionToCoordinates(Position);
@@ -213,6 +214,8 @@ public class BattleSea implements IGame {
 		FillDirections(directions, ship);
 
 		int size = directions.size();
+		if(size == 0)
+			return -1;
 		Direction direction = directions.get(0);
 		if (size > 1) {
 			Random random = new Random();

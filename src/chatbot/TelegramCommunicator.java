@@ -9,8 +9,6 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardRem
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
-import db.DataBase;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,7 +37,7 @@ public class TelegramCommunicator extends TelegramLongPollingBot {
     @Override
     public void onUpdateReceived(Update update) {
         try {
-            Reply reply = chatbot.ProcessRequest(update.getMessage().getText(), update.getMessage().getFrom().getId().intValue());
+            Reply reply = chatbot.ProcessRequest(update.getMessage().getText(), update.getMessage().getChatId().intValue()); //.getFrom().getId().intValue()
 
             SendMessage sendMessage = new SendMessage(update.getMessage().getChatId(), 
             		reply.botAnswer);
@@ -51,6 +49,18 @@ public class TelegramCommunicator extends TelegramLongPollingBot {
             }
             execute(sendMessage);
         } catch (TelegramApiException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public void SendMessage(int id, String text)
+    {
+    	try {
+    	 SendMessage sendMessage = new SendMessage(Integer.toString(id), text);
+    	 sendMessage.setReplyMarkup(new ReplyKeyboardRemove());
+    	 execute(sendMessage);
+    	 
+    	} catch (TelegramApiException e) {
             e.printStackTrace();
         }
     }

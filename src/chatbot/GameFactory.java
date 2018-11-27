@@ -9,7 +9,7 @@ public class GameFactory implements IGameFactory {
     @Override
     public IGame create(IDataBase db, int id) {
     	
-    	boolean check = db.checkId(id);
+    	boolean check = db.checkIdIsActive(id);
 
         game = check ? (BattleSea) db.getData(id): new BattleSea(id);
         return game;
