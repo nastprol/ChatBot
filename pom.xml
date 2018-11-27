@@ -95,6 +95,7 @@
 						<manifest>
 							<addClasspath>true</addClasspath>
 							<mainClass>chatbot.Program</mainClass>
+							<name>Bot</name>
 							<classpathPrefix>lib/</classpathPrefix>
 						</manifest>
 					</archive>
