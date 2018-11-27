@@ -1,1 +1,1 @@
-worker: sh src/bin/Bot -Djdbc.drivers=org.postgresql.Driver
+worker: java -jar target/ChatBot-1.0.jar -Djdbc.drivers=org.postgresql.Driver
