@@ -5,6 +5,7 @@
 	<groupId>ChatBot</groupId>
 	<artifactId>ChatBot</artifactId>
 	<version>1.0</version>
+	<packaging>jar</packaging>
 	<name>Bot</name>
 
 	<properties>
@@ -72,6 +73,7 @@
 			</resource>
 		</resources>
 		<plugins>
+		
 			<plugin>
 				<artifactId>maven-dependency-plugin</artifactId>
 				<executions>
@@ -112,6 +114,7 @@
 					<target>10</target>
 				</configuration>
 			</plugin>
+			
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.7.0</version>
