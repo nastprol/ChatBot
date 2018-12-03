@@ -5,6 +5,7 @@
 	<groupId>ChatBot</groupId>
 	<artifactId>ChatBot</artifactId>
 	<version>1.0</version>
+	<packaging>jar</packaging>
 	<name>Bot</name>
 
 	<properties>
@@ -27,6 +28,19 @@
 			<artifactId>telegrambots</artifactId>
 			<version>4.1</version>
 		</dependency>
+		
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-api</artifactId>
+			<version>5.0.0-M1</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>RELEASE</version>
+			<scope>compile</scope>
+		</dependency>
 
 		<dependency>
 			<groupId>postgresql</groupId>
@@ -35,22 +49,11 @@
 		</dependency>
 
 		<dependency>
-			<groupId>org.junit.jupiter</groupId>
-			<artifactId>junit-jupiter-api</artifactId>
-			<version>5.0.0-M1</version>
-		</dependency>
-
-		<dependency>
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
 			<version>42.2.5</version>
 		</dependency>
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>RELEASE</version>
-			<scope>compile</scope>
-		</dependency>
+		
 		<dependency>
 			<groupId>com.google.code.gson</groupId>
 			<artifactId>gson</artifactId>
@@ -70,6 +73,7 @@
 			</resource>
 		</resources>
 		<plugins>
+		
 			<plugin>
 				<artifactId>maven-dependency-plugin</artifactId>
 				<executions>
@@ -123,6 +127,7 @@
 					<target>10</target>
 				</configuration>
 			</plugin>
+			
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.7.0</version>

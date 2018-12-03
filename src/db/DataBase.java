@@ -14,8 +14,8 @@ public class DataBase implements IDataBase {
 
 	public void connect() {
 		try {
-			String dbUrl = System.getenv("DATABASE_URL");
-			c = DriverManager.getConnection(dbUrl, "root", "root");
+			String dbUrl = System.getenv("JDBC_DATABASE_URL");
+			c = DriverManager.getConnection(dbUrl);
 		} catch (Exception e) {
 			e.printStackTrace();
 			System.exit(1);
@@ -33,14 +33,8 @@ public class DataBase implements IDataBase {
 	}
 
 	public void initDatabase() {
-		try {
-			try {
-				Class.forName("org.postgresql.Driver");
-			} catch (ClassNotFoundException e) {
-				e.printStackTrace();
-				System.exit(1);
-			}
-			String dbUrl = System.getenv("DATABASE_URL");
+		try {		
+			String dbUrl = System.getenv("JDBC_DATABASE_URL");d2
 			c = DriverManager.getConnection(dbUrl);
 			if (c.isClosed())
 				tryConnect();
