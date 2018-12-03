@@ -14,7 +14,7 @@ public class DataBase implements IDataBase {
 
 	public void connect() {
 		try {
-			String dbUrl = System.getenv("DB_URL");
+			String dbUrl = System.getenv("DATABASE_URL");
 			c = DriverManager.getConnection(dbUrl, "root", "root");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -35,7 +35,7 @@ public class DataBase implements IDataBase {
 	public void initDatabase() {
 		try {
 			
-			String dbUrl = System.getenv("DB_URL");
+			String dbUrl = System.getenv("DATABASE_URL");
 			c = DriverManager.getConnection(dbUrl);
 			if (c.isClosed())
 				tryConnect();
