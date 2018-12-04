@@ -20,5 +20,4 @@ public class Manager implements IManager {
 			this.throttling.Throttling(listId);
 		}
 	}
-
 }
