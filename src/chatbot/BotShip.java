@@ -64,7 +64,7 @@ public class BotShip extends Ship {
 		return this.scoreAlive;
 	}
 	
-	protected void ÑhageState()
+	protected void changState()
 	{
 		this.scoreAlive--;
 		if (this.scoreAlive == 0)
