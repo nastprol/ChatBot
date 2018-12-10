@@ -6,3 +6,8 @@
 /ThrottlingClass.class
 /IThrottlingClass.class
 /testManager.class
+/testThrottlingClass.class
+/testThrottling.class
+/MessageSender.class
+/IThrottlingAction.class
+/testThrottlingAction.class

@@ -8,11 +8,11 @@ import junit.framework.Protectable;
 public class ThrottlingClass implements IThrottlingClass {
 
 	private final ArrayDeque<Integer> PriorityIdQueue = new ArrayDeque<Integer>();
-	private TelegramCommunicator tg;
 	private static Integer sentMessages = 0;
-
-	public ThrottlingClass(TelegramCommunicator communicator) {
-		tg = communicator;
+	private IThrottlingAction action;
+	
+	public ThrottlingClass(IThrottlingAction action) {
+		this.action = action;
 	}
 
 	private void traversalDeque() {
@@ -40,7 +40,7 @@ public class ThrottlingClass implements IThrottlingClass {
 				return;
 			}
 			try {
-				SendMessege();
+				action.Send(PriorityIdQueue.pop());
 				Thread.sleep(33);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
@@ -49,14 +49,7 @@ public class ThrottlingClass implements IThrottlingClass {
 		this.sentMessages = 2000;
 	}
 
-	private void SendMessege() {
-		int id = PriorityIdQueue.pop();
-		try {
-			tg.SendMessage(id, "Would you like to play?");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+	
 
 	public void Throttling(List<Integer> ids) {
 		PriorityIdQueue.addAll(ids);
