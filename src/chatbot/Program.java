@@ -24,13 +24,17 @@ import org.telegram.telegrambots.meta.ApiContext;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiRequestException;
 
+import com.google.inject.spi.Message;
+
 import db.DataBase;
 import db.IDataBase;
 import dialog.HourTimer;
 import dialog.IManager;
+import dialog.IThrottlingAction;
 import dialog.IThrottlingClass;
 import dialog.ITimer;
 import dialog.Manager;
+import dialog.MessageSender;
 import dialog.ThrottlingClass;
 
 public class Program {
@@ -71,7 +75,9 @@ public class Program {
 			TelegramCommunicator tg = new TelegramCommunicator(botOptions, bot, cf);
 			botsApi.registerBot(tg);
 			
-			IThrottlingClass throttling = new ThrottlingClass(tg);
+			
+			IThrottlingAction action = new MessageSender(tg);
+			IThrottlingClass throttling = new ThrottlingClass(action);
 			IManager manager = new Manager(db, throttling);
 			ITimer timer = new HourTimer(manager);
 			timer.start();
