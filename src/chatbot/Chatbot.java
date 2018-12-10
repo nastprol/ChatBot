@@ -1,5 +1,9 @@
 package chatbot;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import db.IDataBase;
 
 public class Chatbot implements IBot {
@@ -17,7 +21,14 @@ public class Chatbot implements IBot {
 	protected IGame getGame() {
 		return game;
 	}
-
+	
+	private int GetCurTime() {
+		DateFormat dateFormat = new SimpleDateFormat("HH");
+    	Date date = new Date();
+    	int hour =  Integer.parseInt(dateFormat.format(date));
+    	return hour;
+	}
+	
 	public synchronized Reply ProcessRequest(String userRequest, int id) {
 
 		String request = userRequest.toLowerCase();
@@ -32,7 +43,7 @@ public class Chatbot implements IBot {
 			Reply answer = new Reply();
 			if(game.isPlayerTurn())
 				answer = parser.ProcessPlayerAnswer(request, id);
-			db.setDataItem(id, game);
+			db.setDataItem(id, game, GetCurTime());
 			answer.botAnswer = reply + answer.botAnswer;
 			return answer;
 			
@@ -71,7 +82,7 @@ public class Chatbot implements IBot {
 			game.SetActive();
 			
 			Reply answer = new Reply(game.GetIntroductionMessage(), null);
-			db.setDataItem(id, game);
+			db.setDataItem(id, game, GetCurTime());
 			return answer;
 		}
 		case "/whoareyou": {
@@ -82,7 +93,7 @@ public class Chatbot implements IBot {
 			parser = this.gameFactory.createParser();
 			
 			Reply answer = parser.ProcessPlayerAnswer(request, id);
-			db.setDataItem(id, game);
+			db.setDataItem(id, game, GetCurTime());
 			return answer;
 		}
 		}
