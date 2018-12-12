@@ -5,6 +5,13 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import db.IDataBase;
+import dialog.HourTimer;
+import dialog.IManager;
+import dialog.IThrottlingAction;
+import dialog.IThrottlingClass;
+import dialog.ITimer;
+import dialog.Manager;
+import dialog.ThrottlingClass;
 
 public class Chatbot implements IBot {
 
@@ -13,13 +20,21 @@ public class Chatbot implements IBot {
 	private IParser parser;
 	private IDataBase db;
 
-	Chatbot(IGameFactory gameFactory, IDataBase db) {
+	public Chatbot(IGameFactory gameFactory, IDataBase db) {
 		this.gameFactory = gameFactory;
 		this.db = db;
 	}
 	
 	protected IGame getGame() {
 		return game;
+	}
+	
+	public void subscribe(IThrottlingAction action, int timeMS) {
+		
+		IThrottlingClass throttling = new ThrottlingClass(action);
+		IManager manager = new Manager(db, throttling);
+		ITimer timer = new HourTimer(manager);
+		timer.start(timeMS);
 	}
 	
 	private int GetCurTime() {

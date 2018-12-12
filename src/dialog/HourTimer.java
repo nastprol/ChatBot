@@ -8,9 +8,9 @@ public class HourTimer implements ITimer {
 		this.manager = manager;
 	}
 	
-    public void start() {
+    public void start(int time) {
         OneHourJob hourJob = new OneHourJob(this.manager);
         Timer timer = new Timer();
-        timer.scheduleAtFixedRate(hourJob, 0, 1000 * 60 * 60);
+        timer.scheduleAtFixedRate(hourJob, 0, time);
     }
 }
