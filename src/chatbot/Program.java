@@ -1,4 +1,4 @@
-package chatbot; 
+package chatbot;
 
 import java.net.Authenticator;
 import java.net.PasswordAuthentication;
@@ -26,26 +26,21 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiRequestException;
 
 import db.DataBase;
 import db.IDataBase;
-import dialog.HourTimer;
-import dialog.IManager;
-import dialog.IThrottlingClass;
-import dialog.ITimer;
-import dialog.Manager;
-import dialog.ThrottlingClass;
+import dialog.IThrottlingAction;
+import dialog.MessageSender;
 
 public class Program {
 
 	private static IProxyConfig pc;
 
 	public static void main(String[] args) {
-		
-		pc = new ProxyConfig(); 
-		
-        ApiContextInitializer.init();
-        TelegramBotsApi botsApi = new TelegramBotsApi();
+
+		pc = new ProxyConfig();
+
+		ApiContextInitializer.init();
+		TelegramBotsApi botsApi = new TelegramBotsApi();
 		Authenticator.setDefault(new Authenticator() {
-			
-			
+
 			@Override
 			public PasswordAuthentication getPasswordAuthentication() {
 				return new PasswordAuthentication(pc.getProxyUser(), pc.getProxyPassword().toCharArray());
@@ -55,30 +50,27 @@ public class Program {
 		DefaultBotOptions botOptions = ApiContext.getInstance(DefaultBotOptions.class);
 		botOptions.setProxyHost(pc.getProxyHost());
 		botOptions.setProxyPort(pc.getProxyPort());
-		botOptions.setProxyType(args.length > 0 && args[0].equals("--dev") ?
-                DefaultBotOptions.ProxyType.SOCKS5 : DefaultBotOptions.ProxyType.NO_PROXY);
+		botOptions.setProxyType(args.length > 0 && args[0].equals("--dev") ? DefaultBotOptions.ProxyType.SOCKS5
+				: DefaultBotOptions.ProxyType.NO_PROXY);
 
 		try {
 			IDataBase db = new DataBase();
 
 			db.initDatabase();
 			db.connect();
-			
-			
+
 			Chatbot bot = new Chatbot(new GameFactory(), db);
-			
+
 			BotConfig cf = new BotConfig();
 			TelegramCommunicator tg = new TelegramCommunicator(botOptions, bot, cf);
 			botsApi.registerBot(tg);
-			
-			IThrottlingClass throttling = new ThrottlingClass(tg);
-			IManager manager = new Manager(db, throttling);
-			ITimer timer = new HourTimer(manager);
-			timer.start();
-			
+
+			IThrottlingAction action = new MessageSender(tg);
+			bot.subscribe(action, 1000 * 60 * 60);
+
 		} catch (TelegramApiRequestException e) {
 			e.printStackTrace();
 		}
-	
+
 	}
 }

@@ -1,5 +1,5 @@
 package dialog;
 
 public interface ITimer {
-	public void start();
+	public void start(int time);
 }

@@ -1,66 +1,59 @@
 package dialog;
+
 import java.util.*;
 
 import chatbot.TelegramCommunicator;
 import junit.framework.Protectable;
 
 public class ThrottlingClass implements IThrottlingClass {
-	
-	private static ArrayDeque<Integer> PriorityIdQueue = new ArrayDeque<Integer>();
-	private TelegramCommunicator tg;
-	private static int sentMessages = 0;
 
-	public ThrottlingClass(TelegramCommunicator communicator)
-	{
-		tg = communicator;
-	}
+	private final ArrayDeque<Integer> PriorityIdQueue = new ArrayDeque<Integer>();
+	private static Integer sentMessages = 0;
+	private IThrottlingAction action;
 	
-	private synchronized void traversalDeque()
-	{
-		Send2000Messege();
-		while(!PriorityIdQueue.isEmpty()){
+	public ThrottlingClass(IThrottlingAction action) {
+		this.action = action;
+	}
+
+	private void traversalDeque() {
+		while (!PriorityIdQueue.isEmpty()) {
 			try {
-				if (sentMessages == 2000) {
-					Thread.sleep(1000*60*60);
-					sentMessages = 0;
+				SendMesseges();
+				synchronized (sentMessages) {
+					if (sentMessages == 2000) {
+						Thread.sleep(1000 * 60 * 60);
+						sentMessages = 0;
+					}
 				}
-				Send2000Messege();
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-			}
-	}
-	
-	private synchronized void Send2000Messege()
-	{
-		SendMessege();
-			for(int i = 0; i < 1999;i++) {
-				if(PriorityIdQueue.peek()==null) {
-					this.sentMessages += i + 1;
-					return;
-				}
-				try {
-					Thread.sleep(33);
-					SendMessege();
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-			} 
-			this.sentMessages = 2000;
-	}
-	
-	private void SendMessege() {
-		int id = PriorityIdQueue.pop();
-		try {
-		tg.SendMessage(id, "Would you like to play?");
-		} catch (Exception e) {;
 		}
 	}
+
+	private void SendMesseges() {
+		for (int i = 0; i < 1999; i++) {
+			if (PriorityIdQueue.peek() == null) {
+				synchronized (sentMessages) {
+					this.sentMessages += i + 1;
+				}
+				return;
+			}
+			try {
+				action.Send(PriorityIdQueue.pop());
+				Thread.sleep(33);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+		this.sentMessages = 2000;
+	}
+
+	
 
 	public void Throttling(List<Integer> ids) {
 		PriorityIdQueue.addAll(ids);
 		traversalDeque();
 	}
-	
 
 }

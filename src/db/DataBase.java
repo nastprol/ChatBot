@@ -134,16 +134,12 @@ public class DataBase implements IDataBase {
 		}
 	}
 
-	public void setDataItem(int userId,Object object) {
+	public void setDataItem(int userId,Object object, int hour) {
 		try {
 			delete(userId);
 			
 			Json json = new Json<BattleSea>( BattleSea.class);
 			String jsonString = json.GetStringJson(object);
-			
-			DateFormat dateFormat = new SimpleDateFormat("HH");
-	    	Date date = new Date();
-	    	int hour =  Integer.parseInt(dateFormat.format(date));
 
 			PreparedStatement stmt;
 			stmt = c.prepareStatement("INSERT INTO db2(user_id, jsonString, hour) VALUES(?, ?, ?)");
